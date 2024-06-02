@@ -24,16 +24,18 @@ export function Provider({ children }: IProps) {
     const { connectTo, send, peerId, connected } = useService();
 
     const moveSelected = useCallback((pos: IPosition) => {
-        console.log(pos);
-
         if (selected.x !== -1 && selected.y !== -1) {
             const figure = figures.find((item) => item.x === selected.x && item.y === selected.y);
             if (figure) {
                 const path = calculatePath(figures, figure, pos);
-                moveTo(figure, path).then(() => {
-                    setFigures((prev) => [...prev]);
-                    setSelected({x: -1, y: -1});
-                });
+                if (path.length) {
+                    moveTo(figure, path).then(() => {
+                        setFigures((prev) => [...prev]);
+                        setSelected({x: -1, y: -1});
+                        figure.x = pos.x;
+                        figure.y = pos.y;
+                    });
+                }
             }
         }
 

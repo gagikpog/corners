@@ -39,7 +39,7 @@ export function useService() {
                 action: ResponseActions.Play,
                 payload
             }
-        })
+        });
     }, []);
 
     const connectTo = useCallback((peerId: string) => {
