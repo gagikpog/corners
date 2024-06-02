@@ -79,4 +79,5 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: left 0.5s, top 0.5s;
 }

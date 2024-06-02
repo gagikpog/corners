@@ -25,6 +25,7 @@ export interface IPosition {
 }
 
 export interface IFigure extends IPosition {
+    id: string;
     color: Color;
     owner: boolean;
 }
