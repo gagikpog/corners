@@ -1,6 +1,7 @@
 import { createContext, useMemo, useState } from 'react';
 import { IFigure, IPosition, IProps } from './types';
 import { generateFigures } from './helpers/generateFigures';
+import { useService } from './hooks/useService';
 
 interface IContextData {
     figures: IFigure[];
@@ -12,7 +13,8 @@ export const Context = createContext<IContextData>({} as IContextData);
 export function Provider({ children }: IProps) {
 
     const [figures] = useState<IFigure[]>(generateFigures);
-    const [selected] = useState<IPosition>({ x: -1, y: -1 });
+    const [selected] = useState<IPosition>({ x: 1, y: 1 });
+    const { connectTo, send } = useService();
 
     const value = useMemo<IContextData>((): IContextData => {
         return {
