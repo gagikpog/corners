@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ResponseActions, ServiceEvents } from '../types';
 import { Service } from '../helpers/service';
+import { getPeerIdFromUrl } from '../helpers/url';
 
 export function useService() {
     const [peerId, setPeerId] = useState<string>('');
@@ -12,6 +13,11 @@ export function useService() {
         service.current.subscribe(ServiceEvents.Open, (peerId: string) => {
             setPeerId(peerId);
             console.log('peerId', peerId);
+            const peerIdFromUrl = getPeerIdFromUrl()
+
+            if (peerIdFromUrl) {
+                service.current.connectTo(peerIdFromUrl, false);
+            }
         });
 
         service.current.subscribe<boolean>(ServiceEvents.Connection ,(connected: boolean) => {
@@ -40,6 +46,6 @@ export function useService() {
         service.current.connectTo(peerId, false);
     }, []);
 
-    return { send, connectTo };
+    return { send, connectTo, peerId, connected };
 
 }

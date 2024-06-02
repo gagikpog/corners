@@ -7,8 +7,36 @@ html, body {
   height: 100%;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+}
+
 #root {
   display: contents;
+}
+
+header {
+  height: 40px;
+  background-color: #858585;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  text-transform: uppercase;
+  margin-left: 12px;
+}
+
+.toolbar {
+  margin-left: auto;
+  margin-right: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.button {
+  cursor: pointer;
 }
 
 main {
@@ -19,7 +47,7 @@ main {
 }
 
 .game {
-  --item-size: calc(min(100vw - 40px, 100vh - 40px) / 8);
+  --item-size: calc(min(100vw - 40px, 100vh - 80px) / 8);
   --figure-size: calc(var(--item-size) * 0.8);
   display: grid;
   grid-template-columns: repeat(9, min-content);
