@@ -11,6 +11,7 @@ interface ISubscribers {
 
 export class Service {
     private _pickId: string = '';
+    private _extPickId: string = '';
     private _peer: Peer;
     private _conn: DataConnection = null as unknown as DataConnection;
     private _connectionOpened: boolean = false;
@@ -50,6 +51,7 @@ export class Service {
     }
 
     connectTo(anotherPeersId: string, withNotify: boolean = true): void {
+        this._extPickId = anotherPeersId;
         this._conn = this._peer.connect(anotherPeersId);
         this._conn.on('open', () => {
             this._connectionOpened = true;
@@ -97,6 +99,7 @@ export class Service {
             if (data.data.action === ResponseActions.Connect) {
                 const payload = data.data.payload as { pickId: string };
                 this.connectTo(payload.pickId, false);
+                this._extPickId = payload.pickId;
                 return;
             }
         }
@@ -131,6 +134,13 @@ export class Service {
         this._subscribers[eventName][key] = callback as (data: unknown) => void;
         return () => {
             delete this._subscribers[eventName][key];
+        };
+    }
+
+    getPeerIds() {
+        return {
+            peerId: this._pickId,
+            extPickId: this._extPickId
         };
     }
 }

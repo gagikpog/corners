@@ -5,7 +5,7 @@ const ITEMS_ARRAY = Array(8 * 9).fill(null);
 
 export default function Board() {
 
-    const { moveSelected } = useContext(Context);
+    const { moveSelected, activePlayer } = useContext(Context);
 
     return (
         <>
@@ -14,7 +14,7 @@ export default function Board() {
                     return (
                         <div className="item"
                              key={index}
-                             onClick={() => moveSelected({ x: index % 9, y: Math.floor(index / 9)})}
+                             onClick={() => activePlayer && moveSelected({ x: index % 9, y: Math.floor(index / 9)})}
                         ></div>
                     );
                 })

@@ -16,17 +16,14 @@ export function useService() {
             const peerIdFromUrl = getPeerIdFromUrl()
 
             if (peerIdFromUrl) {
-                service.current.connectTo(peerIdFromUrl, false);
+                service.current.connectTo(peerIdFromUrl, true);
             }
         });
 
         service.current.subscribe<boolean>(ServiceEvents.Connection ,(connected: boolean) => {
             setConnected(connected);
-            console.log('connected', connected);
-        });
-
-        service.current.subscribe<object>(ServiceEvents.Data ,(data) => {
-            console.log('data', data);
+             
+            console.log('connected', connected, service.current.getPeerIds());
         });
 
     }, []);
@@ -46,6 +43,6 @@ export function useService() {
         service.current.connectTo(peerId, false);
     }, []);
 
-    return { send, connectTo, peerId, connected };
+    return { send, connectTo, peerId, connected, service: service.current };
 
 }
