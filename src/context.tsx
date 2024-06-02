@@ -23,7 +23,7 @@ export function Provider({ children }: IProps) {
 
     const [activePlayer, setActivePlayer] = useState<boolean>(false);
     const [figures, setFigures] = useState<IFigure[]>(generateFigures(Color.Black));
-    const [selected, setSelected] = useState<IPosition>({ x: 1, y: 1 });
+    const [selected, setSelected] = useState<IPosition>({ x: -1, y: -1 });
     const { connectTo, send, peerId, connected, service } = useService();
 
     const moveSelected = useCallback((pos: IPosition) => {
