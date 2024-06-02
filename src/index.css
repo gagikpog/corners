@@ -37,6 +37,9 @@ header {
 
 .button {
   cursor: pointer;
+  background-color: transparent;
+  border: none;
+  user-select: none;
 }
 
 main {

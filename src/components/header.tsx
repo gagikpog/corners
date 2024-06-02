@@ -26,8 +26,8 @@ export function Header() {
         <header>
             <div className="logo">Corners</div>
              <div className="toolbar">
-                <div className='button' onClick={pasteHandler}>Paste URL</div>
-                <div className='button' onClick={copyHandler}>Copy URL</div>
+                <button className='button' onClick={pasteHandler}>Paste URL</button>
+                <button className='button' onClick={copyHandler}>Copy URL</button>
             </div>
         </header>
     );
