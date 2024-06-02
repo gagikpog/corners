@@ -20,6 +20,7 @@ main {
 
 .game {
   --item-size: calc(min(100vw - 40px, 100vh - 40px) / 8);
+  --figure-size: calc(var(--item-size) * 0.8);
   display: grid;
   grid-template-columns: repeat(9, min-content);
   position: relative;
@@ -41,65 +42,13 @@ main {
   width: 0;
 }
 
-.figure.white {
-  --background: #d7d7d7;
-  --background-1: #6f6a6a;
-  --background-2: #1c1c1c;
-}
-
-.figure.black {
-  --background: #181818;
-  --background-1: #717171;
-  --background-2: #716d6d;
-  --shadow-size: 4px;
-}
-
 .figure {
-  width: calc(var(--item-size) * 0.8);
-  height: calc(var(--item-size) * 0.8);
-  margin-left: calc(var(--item-size) * 0.1);
-  margin-top: calc(var(--item-size) * 0.1);
-  border-radius: 50%;
+  width: var(--item-size);
+  height: var(--item-size);
   position: absolute;
-  z-index: 0;
   left: calc(var(--left) * var(--item-size));
   top: calc(var(--top) * var(--item-size));
-  background: var(--background);
-  box-shadow: inset 0 0 var(--shadow-size) var(--background-2), inset 0 0 var(--shadow-size) var(--background);
-  border: 2px solid transparent;
-  box-sizing: border-box;
-}
-
-.figure.select {
-  border-color: #e3e390;
-}
-
-.figure::before {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  border-radius: 50%;
-  width: calc(var(--item-size) * 0.6);
-  height: calc(var(--item-size) * 0.6);
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  background: linear-gradient(145deg, var(--background-1), var(--background));
-  box-shadow: 0 0 var(--shadow-size) var(--background-2), 0 0 var(--shadow-size) var(--background);
-  box-sizing: border-box;
-}
-
-.figure::after {
-  content: "";
-  position: absolute;
-  z-index: 2;
-  border-radius: 50%;
-  width: calc(var(--item-size) * 0.4);
-  height: calc(var(--item-size) * 0.4);
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  background: linear-gradient(145deg, var(--background), var(--background-1));
-  box-shadow: 0 0 var(--shadow-size) var(--background-2), 0 0 var(--shadow-size) var(--background);
-  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

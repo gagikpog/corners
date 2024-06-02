@@ -1,9 +1,10 @@
 import { useContext } from 'react';
 import { Context } from '../context';
+import { Figure } from './figure';
 
 export function Figures() {
 
-    const {figures} = useContext(Context);
+    const {figures, selected} = useContext(Context);
 
     return (
         <>
@@ -13,7 +14,14 @@ export function Figures() {
                         '--left': figure.x,
                         '--top': figure.y
                     } as React.CSSProperties;
-                    return <div key={index} className={`figure ${figure.color}`} style={ styles }></div> 
+                    return (
+                        <div key={index} className={`figure`} style={ styles }>
+                            <Figure
+                                color={figure.color}
+                                selected={selected.x === figure.x && selected.y === figure.y }
+                            />
+                        </div>
+                    );
                 })
             }
         </>
