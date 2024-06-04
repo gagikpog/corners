@@ -90,6 +90,12 @@ main {
   transition: left 0.5s, top 0.5s, width 0.5s, height 0.5s;
 }
 
+.figure-svg {
+  width: var(--figure-size);
+  height: var(--figure-size);
+  transition: width 0.5s, height 0.5s;
+}
+
 .messages {
   position: absolute;
   right: 10px;
