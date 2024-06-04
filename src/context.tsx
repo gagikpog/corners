@@ -1,10 +1,11 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
-import { Color, IFigure, IPosition, IProps, IRequest, ResponseActions, ServiceEvents } from './types';
+import { Color, IFigure, IMessage, IPosition, IProps, IRequest, MessageType, ResponseActions, ServiceEvents } from './types';
 import { generateFigures } from './helpers/generateFigures';
 import { useService } from './hooks/useService';
 import { calculatePath } from './helpers/calculatePath';
 import { moveTo } from './helpers/animation';
 import { getPlayerColor } from './helpers/getPlayerColor';
+import { getMessageId } from './helpers/getId';
 
 interface IContextData {
     figures: IFigure[];
@@ -12,9 +13,11 @@ interface IContextData {
     peerId: string;
     connected: boolean;
     activePlayer: boolean;
+    messages: IMessage[];
     connectTo(peerId: string): void;
     setSelected(pos: IPosition): void;
     moveSelected(pos: IPosition): void;
+    showMessage(message: string, type?: MessageType): void;
 }
 
 export const Context = createContext<IContextData>({} as IContextData);
@@ -25,6 +28,19 @@ export function Provider({ children }: IProps) {
     const [figures, setFigures] = useState<IFigure[]>(generateFigures(Color.Black));
     const [selected, setSelected] = useState<IPosition>({ x: -1, y: -1 });
     const { connectTo, send, peerId, connected, service } = useService();
+    const [messages, setMessages] = useState<IMessage[]>([]);
+
+    const showMessage = useCallback((message: string, type: MessageType = MessageType.Info) => {
+        const data: IMessage = {
+            id: getMessageId(),
+            text: message,
+            type
+        };
+        setMessages((prev) => [...prev, data]);
+        setTimeout(() => {
+            setMessages((prev) => prev.filter((currentMessage) => currentMessage.id !== data.id));
+        }, 3000);
+    }, []);
 
     const moveSelected = useCallback((pos: IPosition) => {
         if (selected.x !== -1 && selected.y !== -1) {
@@ -65,8 +81,6 @@ export function Provider({ children }: IProps) {
                         });
                         setActivePlayer(true);
                     }
-
-                    console.log('play', data.data.payload);
                     break;
             }
         });
@@ -78,9 +92,9 @@ export function Provider({ children }: IProps) {
             const color = getPlayerColor(peerId, extPickId);
             setFigures(generateFigures(color));
             setActivePlayer(color === Color.Black);
+            showMessage('Connecting to an opponent!');
         });
-    }, [service]);
-
+    }, [service, showMessage]);
 
     const value = useMemo<IContextData>((): IContextData => {
         return {
@@ -89,14 +103,24 @@ export function Provider({ children }: IProps) {
             peerId,
             connected,
             activePlayer,
+            messages,
             connectTo,
             setSelected,
-            moveSelected
+            moveSelected,
+            showMessage
         };
-    }, [figures, selected, peerId, connected, connectTo, setSelected, moveSelected, activePlayer]);
-
-    // @ts-ignore
-    window.send = send;
+    }, [
+        figures,
+        selected,
+        peerId,
+        connected,
+        activePlayer,
+        messages,
+        connectTo,
+        setSelected,
+        moveSelected,
+        showMessage
+    ]);
 
     return (
         <Context.Provider value={value}>

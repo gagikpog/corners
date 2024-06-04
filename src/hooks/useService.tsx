@@ -12,8 +12,7 @@ export function useService() {
     useEffect(() => {
         service.current.subscribe(ServiceEvents.Open, (peerId: string) => {
             setPeerId(peerId);
-            console.log('peerId', peerId);
-            const peerIdFromUrl = getPeerIdFromUrl()
+            const peerIdFromUrl = getPeerIdFromUrl();
 
             if (peerIdFromUrl) {
                 service.current.connectTo(peerIdFromUrl, true);
@@ -22,8 +21,6 @@ export function useService() {
 
         service.current.subscribe<boolean>(ServiceEvents.Connection ,(connected: boolean) => {
             setConnected(connected);
-             
-            console.log('connected', connected, service.current.getPeerIds());
         });
 
     }, []);

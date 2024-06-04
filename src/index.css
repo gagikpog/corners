@@ -89,3 +89,30 @@ main {
   justify-content: center;
   transition: left 0.5s, top 0.5s, width 0.5s, height 0.5s;
 }
+
+.messages {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.message {
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.message-info {
+  background-color: #17a2b8;
+}
+
+.message-error {
+  background-color: #dc3545;
+}
+
+.message-warn {
+  background-color: #ffc107;
+}
+

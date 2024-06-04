@@ -1,9 +1,6 @@
 export function copy(text: string): Promise<void> {
     if (navigator.clipboard) {
-        return navigator.clipboard.writeText(text).catch(() => {
-            // TODO: show message for error
-            return;
-        });
+        return navigator.clipboard.writeText(text);
     }
 
     return fallbackCopyTextToClipboard(text);
@@ -11,10 +8,7 @@ export function copy(text: string): Promise<void> {
 
 export function paste(): Promise<string> {
     if (navigator.clipboard) {
-        return navigator.clipboard.readText().catch(() => {
-            // TODO: show message for error
-            return '';
-        });
+        return navigator.clipboard.readText();
     }
 
     return pastFromBufferFallback();

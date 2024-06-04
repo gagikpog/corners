@@ -4,6 +4,7 @@ import './App.css';
 import Board from './components/board';
 import { Figures } from './components/figures';
 import { Header } from './components/header';
+import { Messages } from './components/messages';
 
 export default function App() {
 
@@ -15,6 +16,7 @@ export default function App() {
                     <Board />
                     <Figures />
                 </div>
+                <Messages />
             </main>
         </>
     );

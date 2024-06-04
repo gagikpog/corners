@@ -2,25 +2,33 @@ import { useCallback, useContext } from 'react';
 import { Context } from '../context';
 import { copy, paste } from '../helpers/clipboard';
 import { generateUrl, getPeerId } from '../helpers/url';
+import { MessageType } from '../types';
 
 export function Header() {
 
-    const { peerId, connectTo, activePlayer, connected } = useContext(Context);
+    const { peerId, activePlayer, connected, connectTo, showMessage } = useContext(Context);
 
     const copyHandler = useCallback(() => {
-        copy(generateUrl(peerId));
-    }, [peerId]);
+        copy(generateUrl(peerId)).then(() => {
+            showMessage(`Link copied successfully!`);
+        }).catch(() => {
+            showMessage(`Error copying link!`, MessageType.Error);
+        });
+    }, [peerId, showMessage]);
 
     const pasteHandler = useCallback(() => {
         paste().then((text: string) => {
             const id = getPeerId(text);
             if (id) {
                 connectTo(id);
+                showMessage(`Link inserted successfully!`);
             } else {
-                // TODO написать сообщение об ошибке
+                showMessage(`Can't connect, wrong URL!`, MessageType.Warn);
             }
-        })
-    }, [connectTo]);
+        }).catch(() => {
+            showMessage(`Error when inserting link!`, MessageType.Error);
+        });
+    }, [connectTo, showMessage]);
 
     return (
         <header>

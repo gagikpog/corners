@@ -14,6 +14,12 @@ export enum ResponseActions {
     Connect = 'connect'
 }
 
+export enum MessageType {
+    Error = 'error',
+    Info = 'info',
+    Warn =  'warn'
+}
+
 export interface IProps {
     className?: string;
     children?: JSX.Element;
@@ -39,4 +45,10 @@ export interface IRequest {
     data: IResponseData;
     callId: string;
     needResult: boolean;
+}
+
+export interface IMessage {
+    text: string;
+    id: string;
+    type: MessageType
 }
