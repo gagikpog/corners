@@ -28,8 +28,12 @@ header {
   margin-left: 12px;
 }
 
+.status-bar {
+  margin: 0 auto;
+  text-transform: uppercase;
+}
+
 .toolbar {
-  margin-left: auto;
   margin-right: 12px;
   display: flex;
   gap: 8px;
@@ -62,6 +66,7 @@ main {
   width: var(--item-size);
   height: var(--item-size);
   background-color: #222;
+  transition: width 0.5s, height 0.5s;
 }
 
 .item:nth-child(2n + 1) {
@@ -82,5 +87,5 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: left 0.5s, top 0.5s;
+  transition: left 0.5s, top 0.5s, width 0.5s, height 0.5s;
 }

@@ -5,7 +5,7 @@ import { generateUrl, getPeerId } from '../helpers/url';
 
 export function Header() {
 
-    const { peerId, connectTo } = useContext(Context);
+    const { peerId, connectTo, activePlayer, connected } = useContext(Context);
 
     const copyHandler = useCallback(() => {
         copy(generateUrl(peerId));
@@ -25,10 +25,13 @@ export function Header() {
     return (
         <header>
             <div className="logo">Corners</div>
-             <div className="toolbar">
-                <button className='button' onClick={pasteHandler}>Paste URL</button>
-                <button className='button' onClick={copyHandler}>Copy URL</button>
-            </div>
+                <div className='status-bar'>
+                    { connected ? activePlayer ? 'your move' : `opponent's move` : 'opponent is not connected' }
+                </div>
+                <div className="toolbar">
+                    <button className='button' onClick={pasteHandler}>Paste URL</button>
+                    <button className='button' onClick={copyHandler}>Copy URL</button>
+                </div>
         </header>
     );
 }
