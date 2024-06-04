@@ -1,4 +1,5 @@
 import { IFigure, IPosition } from '../types';
+import { getFigureKey } from './getFigureKey';
 
 const checkedPositions = new Set<string>();
 
@@ -15,7 +16,7 @@ export function calculatePath(figures: IFigure[], figure: IFigure, pos: IPositio
     }
 
     const figuresMap = figures.reduce((res, item) => {
-        res.set(getKey(item), item);
+        res.set(getFigureKey(item), item);
         return res;
     }, new Map());
 
@@ -33,12 +34,8 @@ function isValidPos(pos: IPosition) {
     return pos.x >= 0 && pos.x < 8 && pos.y >= 0 && pos.y < 8;
 }
 
-function getKey(pos: IPosition) {
-    return `${pos.x},${pos.y}`;
-}
-
 function isEmpty(figuresMap: Map<string, IFigure>, pos: IPosition): boolean {
-    return !figuresMap.get(getKey(pos));
+    return !figuresMap.get(getFigureKey(pos));
 }
 
 function canJump(figuresMap: Map<string, IFigure>, from: IPosition, to: IPosition): boolean {
@@ -48,10 +45,10 @@ function canJump(figuresMap: Map<string, IFigure>, from: IPosition, to: IPositio
 
 function findPathStep(figuresMap: Map<string, IFigure>, currentPos: IPosition, endPos: IPosition): IPosition[] {
 
-    if (!isValidPos(currentPos) || checkedPositions.has(getKey(currentPos))) {
+    if (!isValidPos(currentPos) || checkedPositions.has(getFigureKey(currentPos))) {
         return [];
     }
-    checkedPositions.add(getKey(currentPos));
+    checkedPositions.add(getFigureKey(currentPos));
 
     const leftPos = { x: currentPos.x - 2, y: currentPos.y };
     const rightPos = { x: currentPos.x + 2, y: currentPos.y };
