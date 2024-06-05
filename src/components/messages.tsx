@@ -7,7 +7,7 @@ export function Messages() {
         <div className='messages'>
             {
                 messages.map((message) => {
-                    return <div className={`message message-${message.type}`}>{message.text}</div>
+                    return <div key={message.id} className={`message message-${message.type}`}>{message.text}</div>
                 })
             }
         </div>

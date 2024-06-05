@@ -1,7 +1,7 @@
 import { GAME_SIZE, ITEMS_HIGHT, ITEMS_WIDTH } from '../constants';
-import { IFigure } from '../types';
+import { GameStatus, IFigure } from '../types';
 
-export function checkGameEnd(figures: IFigure[], firstPlayer: boolean): string {
+export function checkGameEnd(figures: IFigure[], firstPlayer: boolean): GameStatus {
     let opponentCount = 0;
     let playerCount = 0;
     let res = '';
@@ -33,12 +33,12 @@ export function checkGameEnd(figures: IFigure[], firstPlayer: boolean): string {
 
     switch (res) {
         case 'lose':
-            return 'lose';
+            return GameStatus.Lose;
         case 'win':
-            return 'win';
+            return GameStatus.Win;
         case 'losewin':
-            return 'gameDraw';
+            return GameStatus.Draw;
         default:
-            return 'process';
+            return GameStatus.Game;
     }
 }

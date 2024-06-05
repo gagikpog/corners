@@ -13,7 +13,7 @@ export default function Board() {
             {
                 ITEMS_ARRAY.map((_, index): JSX.Element => {
                     return (
-                        <div className={`item ${(index + 1) % (GAME_SIZE + 1) === 0 ? 'hidden' : ''}`}
+                        <div className={`item ${(index + 1) % (GAME_SIZE + 1) === 0 ? 'hide' : ''}`}
                              key={index}
                              onClick={() => activePlayer && moveSelected({ x: index % (GAME_SIZE + 1), y: Math.floor(index / (GAME_SIZE + 1))})}
                         ></div>

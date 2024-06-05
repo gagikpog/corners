@@ -1,5 +1,5 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
-import { Color, IFigure, IMessage, IPosition, IProps, IRequest, MessageType, ResponseActions, ServiceEvents } from './types';
+import { Color, GameStatus, IFigure, IMessage, IPosition, IProps, IRequest, MessageType, ResponseActions, ServiceEvents } from './types';
 import { generateFigures } from './helpers/generateFigures';
 import { useService } from './hooks/useService';
 import { calculatePath } from './helpers/calculatePath';
@@ -16,6 +16,7 @@ interface IContextData {
     activePlayer: boolean;
     numberOfMoves: number;
     messages: IMessage[];
+    gameStatus: GameStatus;
     connectTo(peerId: string): void;
     setSelected(pos: IPosition): void;
     moveSelected(pos: IPosition): void;
@@ -31,8 +32,9 @@ export function Provider({ children }: IProps) {
     const [figures, setFigures] = useState<IFigure[]>(generateFigures(Color.Black));
     const [selected, setSelected] = useState<IPosition>({ x: -1, y: -1 });
     const [numberOfMoves, setNumberOfMoves] = useState<number>(0);
-    const { connectTo, send, peerId, connected, service } = useService();
     const [messages, setMessages] = useState<IMessage[]>([]);
+    const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.Game);
+    const { connectTo, send, peerId, connected, service } = useService();
 
     const showMessage = useCallback((message: string, type: MessageType = MessageType.Info) => {
         const data: IMessage = {
@@ -53,20 +55,30 @@ export function Provider({ children }: IProps) {
                 const path = calculatePath(figures, figure, pos);
                 if (path.length) {
                     send({ from: { x: figure.x, y: figure.y }, path });
-                    setNumberOfMoves((n) => n + 1);
                     moveTo(figure, path).then(() => {
                         figure.x = pos.x;
                         figure.y = pos.y;
                         setFigures((prev) => [...prev]);
                         setSelected({ x: -1, y: -1 });
                         setActivePlayer(false);
-                        console.log(checkGameEnd(figures, firstPlayer));
+                        setNumberOfMoves((n) => n + 1);
                     });
                 }
             }
         }
 
-    }, [figures, selected, firstPlayer, send]);
+    }, [figures, selected, send]);
+
+    useEffect(() => {
+        if (connected && numberOfMoves % 2 === 0) {
+            setFigures((prev) => {
+                const stats = checkGameEnd(prev, firstPlayer);
+                setGameStatus(stats);
+                console.log(stats);
+                return prev;
+            });
+        }
+    }, [numberOfMoves, firstPlayer, connected]);
 
     useEffect(() => {
         return service.subscribe<IRequest>(ServiceEvents.Data, (data) => {
@@ -113,6 +125,7 @@ export function Provider({ children }: IProps) {
             activePlayer,
             messages,
             numberOfMoves,
+            gameStatus,
             connectTo,
             setSelected,
             moveSelected,
@@ -126,6 +139,7 @@ export function Provider({ children }: IProps) {
         activePlayer,
         messages,
         numberOfMoves,
+        gameStatus,
         connectTo,
         setSelected,
         moveSelected,

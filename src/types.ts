@@ -20,6 +20,13 @@ export enum MessageType {
     Warn =  'warn'
 }
 
+export enum GameStatus {
+    Game = 'game',
+    Lose = 'lose',
+    Win = 'win',
+    Draw = 'draw'
+}
+
 export interface IProps {
     className?: string;
     children?: JSX.Element;

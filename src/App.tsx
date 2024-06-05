@@ -7,6 +7,7 @@ import { Figures } from './components/figures';
 import { Header } from './components/header';
 import { Messages } from './components/messages';
 import { GAME_SIZE } from './constants';
+import { Display } from './components/display';
 
 export default function App() {
 
@@ -19,6 +20,7 @@ export default function App() {
                     <Figures />
                 </div>
                 <Messages />
+                <Display />
             </main>
         </>
     );

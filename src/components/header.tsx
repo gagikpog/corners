@@ -37,8 +37,14 @@ export function Header() {
                     <div>
                         { connected ? activePlayer ? 'your move' : `opponent's move` : 'opponent is not connected' }
                     </div>
-                    <div>|</div>
-                    <div> move {numberOfMoves} </div>
+                    {
+                        numberOfMoves ? (
+                            <>
+                                <div>|</div>
+                                <div> move {numberOfMoves} </div>
+                            </>
+                        ) : null
+                    }
                 </div>
                 <div className="toolbar">
                     <button className='button' onClick={pasteHandler}>Paste URL</button>
