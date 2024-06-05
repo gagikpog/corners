@@ -6,7 +6,7 @@ import { MessageType } from '../types';
 
 export function Header() {
 
-    const { peerId, activePlayer, connected, connectTo, showMessage } = useContext(Context);
+    const { peerId, activePlayer, connected, numberOfMoves, connectTo, showMessage } = useContext(Context);
 
     const copyHandler = useCallback(() => {
         copy(generateUrl(peerId)).then(() => {
@@ -34,7 +34,11 @@ export function Header() {
         <header>
             <div className="logo">Corners</div>
                 <div className='status-bar'>
-                    { connected ? activePlayer ? 'your move' : `opponent's move` : 'opponent is not connected' }
+                    <div>
+                        { connected ? activePlayer ? 'your move' : `opponent's move` : 'opponent is not connected' }
+                    </div>
+                    <div>|</div>
+                    <div> move {numberOfMoves} </div>
                 </div>
                 <div className="toolbar">
                     <button className='button' onClick={pasteHandler}>Paste URL</button>

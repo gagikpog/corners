@@ -30,6 +30,8 @@ header {
 
 .status-bar {
   margin: 0 auto;
+  display: flex;
+  gap: 8px;
   text-transform: uppercase;
 }
 
