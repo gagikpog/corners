@@ -1,7 +1,8 @@
 import { useContext } from 'react';
 import { Context } from '../context';
+import { GAME_SIZE } from '../constants';
 
-const ITEMS_ARRAY = Array(8 * 9).fill(null);
+const ITEMS_ARRAY = Array(GAME_SIZE * (GAME_SIZE + 1)).fill(null);
 
 export default function Board() {
 
@@ -12,9 +13,9 @@ export default function Board() {
             {
                 ITEMS_ARRAY.map((_, index): JSX.Element => {
                     return (
-                        <div className="item"
+                        <div className={`item ${(index + 1) % (GAME_SIZE + 1) === 0 ? 'hidden' : ''}`}
                              key={index}
-                             onClick={() => activePlayer && moveSelected({ x: index % 9, y: Math.floor(index / 9)})}
+                             onClick={() => activePlayer && moveSelected({ x: index % (GAME_SIZE + 1), y: Math.floor(index / (GAME_SIZE + 1))})}
                         ></div>
                     );
                 })

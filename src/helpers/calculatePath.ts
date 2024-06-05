@@ -1,3 +1,4 @@
+import { GAME_SIZE } from '../constants';
 import { IFigure, IPosition } from '../types';
 import { getFigureKey } from './getFigureKey';
 
@@ -31,7 +32,7 @@ function comparePos(pos1: IPosition, pos2: IPosition) {
 }
 
 function isValidPos(pos: IPosition) {
-    return pos.x >= 0 && pos.x < 8 && pos.y >= 0 && pos.y < 8;
+    return pos.x >= 0 && pos.x < GAME_SIZE && pos.y >= 0 && pos.y < GAME_SIZE;
 }
 
 function isEmpty(figuresMap: Map<string, IFigure>, pos: IPosition): boolean {

@@ -54,10 +54,10 @@ main {
 }
 
 .game {
-  --item-size: calc(min(100vw - 40px, 100vh - 80px) / 8);
+  --item-size: calc(min(100vw - 40px, 100vh - 80px) / var(--game-size));
   --figure-size: calc(var(--item-size) * 0.8);
   display: grid;
-  grid-template-columns: repeat(9, min-content);
+  grid-template-columns: repeat(calc(var(--game-size) + 1), min-content);
   position: relative;
   border: 1px solid #222;
 }
@@ -73,7 +73,7 @@ main {
   background-color: #fff;
 }
 
-.item:nth-child(9n) {
+.item.hidden {
   visibility: hidden;
   width: 0;
 }
