@@ -6,6 +6,7 @@ import { calculatePath } from './helpers/calculatePath';
 import { moveTo } from './helpers/animation';
 import { getPlayerColor } from './helpers/getPlayerColor';
 import { getMessageId } from './helpers/getId';
+import { checkGameEnd } from './helpers/checkGameEnd';
 
 interface IContextData {
     figures: IFigure[];
@@ -13,6 +14,7 @@ interface IContextData {
     peerId: string;
     connected: boolean;
     activePlayer: boolean;
+    numberOfMoves: number;
     messages: IMessage[];
     connectTo(peerId: string): void;
     setSelected(pos: IPosition): void;
@@ -25,8 +27,10 @@ export const Context = createContext<IContextData>({} as IContextData);
 export function Provider({ children }: IProps) {
 
     const [activePlayer, setActivePlayer] = useState<boolean>(false);
+    const [firstPlayer, setFirstPlayer] = useState<boolean>(false);
     const [figures, setFigures] = useState<IFigure[]>(generateFigures(Color.Black));
     const [selected, setSelected] = useState<IPosition>({ x: -1, y: -1 });
+    const [numberOfMoves, setNumberOfMoves] = useState<number>(0);
     const { connectTo, send, peerId, connected, service } = useService();
     const [messages, setMessages] = useState<IMessage[]>([]);
 
@@ -49,18 +53,20 @@ export function Provider({ children }: IProps) {
                 const path = calculatePath(figures, figure, pos);
                 if (path.length) {
                     send({ from: { x: figure.x, y: figure.y }, path });
+                    setNumberOfMoves((n) => n + 1);
                     moveTo(figure, path).then(() => {
                         figure.x = pos.x;
                         figure.y = pos.y;
                         setFigures((prev) => [...prev]);
                         setSelected({ x: -1, y: -1 });
+                        setActivePlayer(false);
+                        console.log(checkGameEnd(figures, firstPlayer));
                     });
-                    setActivePlayer(false);
                 }
             }
         }
 
-    }, [figures, selected, send]);
+    }, [figures, selected, firstPlayer, send]);
 
     useEffect(() => {
         return service.subscribe<IRequest>(ServiceEvents.Data, (data) => {
@@ -78,6 +84,7 @@ export function Provider({ children }: IProps) {
                             figure.y = pos.y;
                             setFigures((prev) => [...prev]);
                             setSelected({ x: -1, y: -1 });
+                            setNumberOfMoves((n) => n + 1);
                         });
                         setActivePlayer(true);
                     }
@@ -92,6 +99,7 @@ export function Provider({ children }: IProps) {
             const color = getPlayerColor(peerId, extPickId);
             setFigures(generateFigures(color));
             setActivePlayer(color === Color.Black);
+            setFirstPlayer(color === Color.Black);
             showMessage('Connecting to an opponent!');
         });
     }, [service, showMessage]);
@@ -104,6 +112,7 @@ export function Provider({ children }: IProps) {
             connected,
             activePlayer,
             messages,
+            numberOfMoves,
             connectTo,
             setSelected,
             moveSelected,
@@ -116,6 +125,7 @@ export function Provider({ children }: IProps) {
         connected,
         activePlayer,
         messages,
+        numberOfMoves,
         connectTo,
         setSelected,
         moveSelected,
