@@ -58,13 +58,13 @@ export function Provider({ children }: IProps) {
                 const path = calculatePath(figures, figure, pos);
                 if (path.length) {
                     send({ from: { x: figure.x, y: figure.y }, path });
+                    setActivePlayer(false);
+                    setSelected(EMPTY_POSITION);
                     moveTo(figure, path).then(() => {
                         setLastMove({ from: { x: figure.x, y: figure.y }, to: pos });
                         figure.x = pos.x;
                         figure.y = pos.y;
                         setFigures((prev) => [...prev]);
-                        setSelected(EMPTY_POSITION);
-                        setActivePlayer(false);
                         setNumberOfMoves((n) => n + 1);
                     });
                 }
@@ -101,8 +101,8 @@ export function Provider({ children }: IProps) {
                             setFigures((prev) => [...prev]);
                             setSelected(EMPTY_POSITION);
                             setNumberOfMoves((n) => n + 1);
+                            setActivePlayer(true);
                         });
-                        setActivePlayer(true);
                     }
                     break;
             }
