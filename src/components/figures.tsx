@@ -2,6 +2,7 @@ import { useCallback, useContext } from 'react';
 import { Context } from '../context';
 import { Figure } from './figure';
 import { IFigure } from '../types';
+import { EMPTY_POSITION } from '../constants';
 
 export function Figures() {
 
@@ -9,7 +10,7 @@ export function Figures() {
 
     const figureClickHandler = useCallback((figure: IFigure) => {
         const canSelect = figure.owner;
-        setSelected(canSelect && activePlayer ? { x: figure.x, y: figure.y } : { x: -1, y: -1 });
+        setSelected(canSelect && activePlayer ? { x: figure.x, y: figure.y } : EMPTY_POSITION);
     }, [setSelected, activePlayer]);
 
     return (

@@ -1,5 +1,5 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
-import { Color, GameStatus, IFigure, IMessage, IPosition, IProps, IRequest, MessageType, ResponseActions, ServiceEvents } from './types';
+import { Color, GameStatus, IFigure, ILastMove, IMessage, IPosition, IProps, IRequest, MessageType, ResponseActions, ServiceEvents } from './types';
 import { generateFigures } from './helpers/generateFigures';
 import { useService } from './hooks/useService';
 import { calculatePath } from './helpers/calculatePath';
@@ -7,6 +7,7 @@ import { moveTo } from './helpers/animation';
 import { getPlayerColor } from './helpers/getPlayerColor';
 import { getMessageId } from './helpers/getId';
 import { checkGameEnd } from './helpers/checkGameEnd';
+import { EMPTY_POSITION } from './constants';
 
 interface IContextData {
     figures: IFigure[];
@@ -17,6 +18,7 @@ interface IContextData {
     numberOfMoves: number;
     messages: IMessage[];
     gameStatus: GameStatus;
+    lastMove: ILastMove;
     connectTo(peerId: string): void;
     setSelected(pos: IPosition): void;
     moveSelected(pos: IPosition): void;
@@ -30,10 +32,11 @@ export function Provider({ children }: IProps) {
     const [activePlayer, setActivePlayer] = useState<boolean>(false);
     const [firstPlayer, setFirstPlayer] = useState<boolean>(false);
     const [figures, setFigures] = useState<IFigure[]>(generateFigures(Color.Black));
-    const [selected, setSelected] = useState<IPosition>({ x: -1, y: -1 });
+    const [selected, setSelected] = useState<IPosition>(EMPTY_POSITION);
     const [numberOfMoves, setNumberOfMoves] = useState<number>(0);
     const [messages, setMessages] = useState<IMessage[]>([]);
     const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.Game);
+    const [lastMove, setLastMove] = useState<ILastMove>({ from: EMPTY_POSITION, to: EMPTY_POSITION });
     const { connectTo, send, peerId, connected, service } = useService();
 
     const showMessage = useCallback((message: string, type: MessageType = MessageType.Info) => {
@@ -49,17 +52,18 @@ export function Provider({ children }: IProps) {
     }, []);
 
     const moveSelected = useCallback((pos: IPosition) => {
-        if (selected.x !== -1 && selected.y !== -1) {
+        if (selected.x !== EMPTY_POSITION.x && selected.y !== EMPTY_POSITION.y) {
             const figure = figures.find((item) => item.x === selected.x && item.y === selected.y);
             if (figure) {
                 const path = calculatePath(figures, figure, pos);
                 if (path.length) {
                     send({ from: { x: figure.x, y: figure.y }, path });
                     moveTo(figure, path).then(() => {
+                        setLastMove({ from: { x: figure.x, y: figure.y }, to: pos });
                         figure.x = pos.x;
                         figure.y = pos.y;
                         setFigures((prev) => [...prev]);
-                        setSelected({ x: -1, y: -1 });
+                        setSelected(EMPTY_POSITION);
                         setActivePlayer(false);
                         setNumberOfMoves((n) => n + 1);
                     });
@@ -92,10 +96,11 @@ export function Provider({ children }: IProps) {
                     if (figure) {
                         moveTo(figure, path).then(() => {
                             const pos = path[path.length -1];
+                            setLastMove({ from: { x: figure.x, y: figure.y }, to: pos });
                             figure.x = pos.x;
                             figure.y = pos.y;
                             setFigures((prev) => [...prev]);
-                            setSelected({ x: -1, y: -1 });
+                            setSelected(EMPTY_POSITION);
                             setNumberOfMoves((n) => n + 1);
                         });
                         setActivePlayer(true);
@@ -126,6 +131,7 @@ export function Provider({ children }: IProps) {
             messages,
             numberOfMoves,
             gameStatus,
+            lastMove,
             connectTo,
             setSelected,
             moveSelected,
@@ -140,6 +146,7 @@ export function Provider({ children }: IProps) {
         messages,
         numberOfMoves,
         gameStatus,
+        lastMove,
         connectTo,
         setSelected,
         moveSelected,

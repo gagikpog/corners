@@ -59,3 +59,8 @@ export interface IMessage {
     id: string;
     type: MessageType
 }
+
+export interface ILastMove {
+    from: IPosition;
+    to: IPosition;
+}

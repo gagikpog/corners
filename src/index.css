@@ -145,3 +145,11 @@ main {
 .hidden {
   display: none;
 }
+
+.active-from {
+  filter: sepia(1);
+}
+
+.active-to {
+  filter: sepia(1);
+}
