@@ -7,6 +7,7 @@ interface ISubscribers {
     [ServiceEvents.Connection]: Subscriber;
     [ServiceEvents.Data]: Subscriber;
     [ServiceEvents.Open]: Subscriber;
+    [ServiceEvents.Error]: Subscriber;
 }
 
 export class Service {
@@ -20,7 +21,8 @@ export class Service {
     private _subscribers: ISubscribers = {
         [ServiceEvents.Connection]: {},
         [ServiceEvents.Data]: {},
-        [ServiceEvents.Open]: {}
+        [ServiceEvents.Open]: {},
+        [ServiceEvents.Error]: {}
     };
 
     constructor() {
@@ -42,6 +44,10 @@ export class Service {
                     console.error(error);
                 }
             });
+        });
+
+        this._peer.on('error', (error: Error) => {
+            this._notify(ServiceEvents.Error, error.message);
         });
 
         this._peer.on('close', () => {

@@ -78,7 +78,6 @@ export function Provider({ children }: IProps) {
             setFigures((prev) => {
                 const stats = checkGameEnd(prev, firstPlayer);
                 setGameStatus(stats);
-                console.log(stats);
                 return prev;
             });
         }
@@ -120,6 +119,21 @@ export function Provider({ children }: IProps) {
             showMessage('Connecting to an opponent!');
         });
     }, [service, showMessage]);
+
+    useEffect(() => {
+        const subscribers = [
+            service.subscribe(ServiceEvents.Open, (peerId: string) => {
+                if (peerId) {
+                    showMessage('Opening connection, wait for the opponent!');
+                }
+            }),
+            service.subscribe(ServiceEvents.Error, (message: string) => {
+                showMessage(message);
+            })
+        ];
+        return () => subscribers.forEach((func) => func());
+    }, [service, showMessage]);
+
 
     const value = useMemo<IContextData>((): IContextData => {
         return {

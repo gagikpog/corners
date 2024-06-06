@@ -6,7 +6,8 @@ export enum Color {
 export enum ServiceEvents {
     Connection = 'connection',
     Data = 'data',
-    Open = 'open'
+    Open = 'open',
+    Error = 'error'
 }
 
 export enum ResponseActions {
