@@ -56,6 +56,44 @@
   position: relative;
 }
 
+.cg-burger {
+  cursor: pointer;
+  z-index: 1;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: transform 0.5s;
+}
+
+.cg-burger-opened {
+  transform: rotate(90deg);
+}
+
+.cg-settings-panel {
+  --panel-width: 200px;
+  left: calc(var(--panel-width) * -1);
+  top: 0;
+  width: var(--panel-width);
+  background-color: #eee;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+  padding: 8px;
+  padding-top: 24px;
+  box-sizing: border-box;
+  transition: left 0.5s;
+  border-right: 1px solid gray;
+}
+
+.cg-settings-panel-opened {
+  left: 0;
+}
+
+.cg-settings-panel-content {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
 .cg-game {
   --item-size: calc(min(100vw - 40px, 100vh - 80px) / var(--game-size));
   --figure-size: calc(var(--item-size) * 0.8);

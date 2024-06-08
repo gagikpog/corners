@@ -1,33 +1,39 @@
-import { GAME_SIZE, ITEMS_HIGHT, ITEMS_WIDTH } from '../constants';
-import { GameStatus, IFigure } from '../types';
+import { GAME_SIZE } from '../constants';
+import { GameStatus, IFigure, ISettings } from '../types';
 
-export function checkGameEnd(figures: IFigure[], firstPlayer: boolean): GameStatus {
+interface ICheckGameEndOptions {
+    figures: IFigure[];
+    firstPlayer: boolean;
+    settings: ISettings;
+}
+
+export function checkGameEnd({ figures, firstPlayer, settings }: ICheckGameEndOptions): GameStatus {
     let opponentCount = 0;
     let playerCount = 0;
     let res = '';
 
     figures.forEach((figure) => {
         if (firstPlayer) {
-            if (figure.owner && figure.x >= GAME_SIZE - ITEMS_WIDTH && figure.y >= GAME_SIZE - ITEMS_HIGHT) {
+            if (figure.owner && figure.x >= GAME_SIZE - settings.itemsWidth && figure.y >= GAME_SIZE - settings.itemsHight) {
                 playerCount++
             }
-            if (!figure.owner && figure.x < ITEMS_WIDTH && figure.y < ITEMS_HIGHT) {
+            if (!figure.owner && figure.x < settings.itemsWidth && figure.y < settings.itemsHight) {
                 opponentCount++
             }
         } else {
-            if (figure.owner && figure.x < ITEMS_WIDTH && figure.y < ITEMS_HIGHT) {
+            if (figure.owner && figure.x < settings.itemsWidth && figure.y < settings.itemsHight) {
                 playerCount++
             }
-            if (!figure.owner && figure.x >= GAME_SIZE - ITEMS_WIDTH && figure.y >= GAME_SIZE - ITEMS_HIGHT) {
+            if (!figure.owner && figure.x >= GAME_SIZE - settings.itemsWidth && figure.y >= GAME_SIZE - settings.itemsHight) {
                 opponentCount++
             }
         }
     });
 
-    if (opponentCount === ITEMS_WIDTH * ITEMS_HIGHT) {
+    if (opponentCount === settings.itemsWidth * settings.itemsHight) {
         res = 'lose';
     }
-    if (playerCount === ITEMS_WIDTH * ITEMS_HIGHT) {
+    if (playerCount === settings.itemsWidth * settings.itemsHight) {
         res += 'win';
     }
 

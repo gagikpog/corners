@@ -12,6 +12,7 @@ export enum ServiceEvents {
 
 export enum ResponseActions {
     Play = 'play',
+    SyncSettings = 'syncSettings',
     Connect = 'connect'
 }
 
@@ -64,4 +65,9 @@ export interface IMessage {
 export interface ILastMove {
     from: IPosition;
     to: IPosition;
+}
+
+export interface ISettings {
+    itemsWidth: number;
+    itemsHight: number;
 }

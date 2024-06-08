@@ -1,5 +1,5 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
-import { Color, GameStatus, IFigure, ILastMove, IMessage, IPosition, IProps, IRequest, MessageType, ResponseActions, ServiceEvents } from './types';
+import { Color, GameStatus, IFigure, ILastMove, IMessage, IPosition, IProps, IRequest, ISettings, MessageType, ResponseActions, ServiceEvents } from './types';
 import { generateFigures } from './helpers/generateFigures';
 import { useService } from './hooks/useService';
 import { calculatePath } from './helpers/calculatePath';
@@ -21,26 +21,28 @@ interface IContextData {
     gameStatus: GameStatus;
     lastMove: ILastMove;
     moves: Set<string>;
+    settings: ISettings;
     connectTo(peerId: string): void;
     setSelected(pos: IPosition): void;
     moveSelected(pos: IPosition): void;
     showMessage(message: string, type?: MessageType): void;
+    setSettings(settings: ISettings): void;
 }
 
 export const Context = createContext<IContextData>({} as IContextData);
 
 export function Provider({ children }: IProps) {
 
+    const { connectTo, sendMove, setSettings, peerId, connected, service, settings } = useService();
     const [activePlayer, setActivePlayer] = useState<boolean>(false);
     const [firstPlayer, setFirstPlayer] = useState<boolean>(false);
-    const [figures, setFigures] = useState<IFigure[]>(generateFigures(Color.Black));
+    const [figures, setFigures] = useState<IFigure[]>(generateFigures(Color.Black, settings));
     const [selected, setSelected] = useState<IPosition>(EMPTY_POSITION);
     const [numberOfMoves, setNumberOfMoves] = useState<number>(0);
     const [messages, setMessages] = useState<IMessage[]>([]);
     const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.Game);
     const [lastMove, setLastMove] = useState<ILastMove>({ from: EMPTY_POSITION, to: EMPTY_POSITION });
     const [moves, setMoves] = useState<Set<string>>(new Set());
-    const { connectTo, send, peerId, connected, service } = useService();
 
     const showMessage = useCallback((message: string, type: MessageType = MessageType.Info) => {
         const data: IMessage = {
@@ -60,7 +62,7 @@ export function Provider({ children }: IProps) {
             if (figure) {
                 const path = calculatePath(figures, figure, pos);
                 if (path.length) {
-                    send({ from: { x: figure.x, y: figure.y }, path });
+                    sendMove({ from: { x: figure.x, y: figure.y }, path });
                     setActivePlayer(false);
                     setSelected(EMPTY_POSITION);
                     moveTo(figure, path).then(() => {
@@ -74,17 +76,17 @@ export function Provider({ children }: IProps) {
             }
         }
 
-    }, [figures, selected, send]);
+    }, [figures, selected, sendMove]);
 
     useEffect(() => {
-        if (connected && numberOfMoves % 2 === 0) {
+        if (connected && numberOfMoves && numberOfMoves % 2 === 0) {
             setFigures((prev) => {
-                const stats = checkGameEnd(prev, firstPlayer);
+                const stats = checkGameEnd({ figures: prev, firstPlayer, settings });
                 setGameStatus(stats);
                 return prev;
             });
         }
-    }, [numberOfMoves, firstPlayer, connected]);
+    }, [numberOfMoves, firstPlayer, connected, settings]);
 
     useEffect(() => {
         if (selected.x !== EMPTY_POSITION.x && selected.y !== EMPTY_POSITION.y) {
@@ -124,12 +126,17 @@ export function Provider({ children }: IProps) {
         return service.subscribe<boolean>(ServiceEvents.Connection ,(connected: boolean) => {
             const {extPickId, peerId} = service.getPeerIds();
             const color = getPlayerColor(peerId, extPickId);
-            setFigures(generateFigures(color));
             setActivePlayer(color === Color.Black);
             setFirstPlayer(color === Color.Black);
             showMessage('Connecting to an opponent!');
         });
     }, [service, showMessage]);
+
+    useEffect(() => {
+        const {extPickId, peerId} = service.getPeerIds();
+        const color = getPlayerColor(peerId, extPickId);
+        setFigures(generateFigures(color, settings));
+    }, [service, settings, connected]);
 
     useEffect(() => {
         const subscribers = [
@@ -145,7 +152,6 @@ export function Provider({ children }: IProps) {
         return () => subscribers.forEach((func) => func());
     }, [service, showMessage]);
 
-
     const value = useMemo<IContextData>((): IContextData => {
         return {
             figures,
@@ -158,10 +164,12 @@ export function Provider({ children }: IProps) {
             gameStatus,
             lastMove,
             moves,
+            settings,
             connectTo,
             setSelected,
             moveSelected,
-            showMessage
+            showMessage,
+            setSettings
         };
     }, [
         figures,
@@ -174,10 +182,12 @@ export function Provider({ children }: IProps) {
         gameStatus,
         lastMove,
         moves,
+        settings,
         connectTo,
         setSelected,
         moveSelected,
-        showMessage
+        showMessage,
+        setSettings
     ]);
 
     return (
