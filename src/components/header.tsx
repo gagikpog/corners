@@ -31,9 +31,9 @@ export function Header() {
     }, [connectTo, showMessage]);
 
     return (
-        <header>
-            <div className="logo">Corners</div>
-                <div className='status-bar'>
+        <header className='cg-header'>
+            <div className="cg-logo">Corners</div>
+                <div className='cg-status-bar'>
                     <div>
                         { connected ? activePlayer ? 'your move' : `opponent's move` : 'opponent is not connected' }
                     </div>
@@ -46,9 +46,9 @@ export function Header() {
                         ) : null
                     }
                 </div>
-                <div className="toolbar">
-                    <button className='button' onClick={pasteHandler}>Paste URL</button>
-                    <button className='button' onClick={copyHandler}>Copy URL</button>
+                <div className="cg-toolbar">
+                    <button className='cg-button' onClick={pasteHandler}>Paste URL</button>
+                    <button className='cg-button' onClick={copyHandler}>Copy URL</button>
                 </div>
         </header>
     );

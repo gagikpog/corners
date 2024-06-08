@@ -3,52 +3,52 @@
   margin: 0;
 }
 
-html, body {
+.cg-html, .cg-body {
   height: 100%;
 }
 
-body {
+.cg-body {
   display: flex;
   flex-direction: column;
 }
 
-#root {
+#cg-root {
   display: contents;
 }
 
-header {
+.cg-header {
   height: 40px;
   background-color: #858585;
   display: flex;
   align-items: center;
 }
 
-.logo {
+.cg-logo {
   text-transform: uppercase;
   margin-left: 12px;
 }
 
-.status-bar {
+.cg-status-bar {
   margin: 0 auto;
   display: flex;
   gap: 8px;
   text-transform: uppercase;
 }
 
-.toolbar {
+.cg-toolbar {
   margin-right: 12px;
   display: flex;
   gap: 8px;
 }
 
-.button {
+.cg-button {
   cursor: pointer;
   background-color: transparent;
   border: none;
   user-select: none;
 }
 
-main {
+.cg-main {
   height: 100%;
   display: flex;
   align-items: center;
@@ -56,7 +56,7 @@ main {
   position: relative;
 }
 
-.game {
+.cg-game {
   --item-size: calc(min(100vw - 40px, 100vh - 80px) / var(--game-size));
   --figure-size: calc(var(--item-size) * 0.8);
   display: grid;
@@ -65,23 +65,23 @@ main {
   border: 1px solid #222;
 }
 
-.item {
+.cg-item {
   width: var(--item-size);
   height: var(--item-size);
   background-color: #222;
   transition: width 0.5s, height 0.5s;
 }
 
-.item:nth-child(2n + 1) {
+.cg-item:nth-child(2n + 1) {
   background-color: #fff;
 }
 
-.item.hide {
+.cg-item.cg-hide {
   visibility: hidden;
   width: 0;
 }
 
-.figure {
+.cg-figure {
   width: var(--item-size);
   height: var(--item-size);
   position: absolute;
@@ -93,13 +93,13 @@ main {
   transition: left 0.5s, top 0.5s, width 0.5s, height 0.5s;
 }
 
-.figure-svg {
+.cg-figure-svg {
   width: var(--figure-size);
   height: var(--figure-size);
   transition: width 0.5s, height 0.5s;
 }
 
-.messages {
+.cg-messages {
   position: absolute;
   right: 10px;
   bottom: 10px;
@@ -108,24 +108,24 @@ main {
   gap: 8px;
 }
 
-.message {
+.cg-message {
   padding: 10px;
   border-radius: 8px;
 }
 
-.message-info {
+.cg-message-info {
   background-color: #17a2b8;
 }
 
-.message-error {
+.cg-message-error {
   background-color: #dc3545;
 }
 
-.message-warn {
+.cg-message-warn {
   background-color: #ffc107;
 }
 
-.game-status {
+.cg-game-status {
   position: absolute;
   left: 0;
   top: 0;
@@ -142,22 +142,22 @@ main {
   user-select: none;
 }
 
-.hidden {
+.cg-hidden {
   display: none;
 }
 
-.active-from {
+.cg-active-from {
   filter: sepia(1);
 }
 
-.active-to {
+.cg-active-to {
   filter: sepia(1);
 }
 
-.active-move {
+.cg-active-move {
   background-color: #41676d;
 }
 
-.item.active-move:nth-child(2n + 1) {
+.cg-item.cg-active-move:nth-child(2n + 1) {
   background-color: #9af2ff;
 }

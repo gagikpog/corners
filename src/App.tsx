@@ -1,5 +1,3 @@
-// import logo from './logo.svg';
-// {/* <img src={logo} className="App-logo" alt="logo" /> */}
 import { CSSProperties } from 'react';
 import './App.css';
 import Board from './components/board';
@@ -8,20 +6,23 @@ import { Header } from './components/header';
 import { Messages } from './components/messages';
 import { GAME_SIZE } from './constants';
 import { Display } from './components/display';
+import { Provider } from './context';
 
 export default function App() {
 
     return (
-        <>
-            <Header />
-            <main>
-                <div className="game" style={{ '--game-size': GAME_SIZE } as CSSProperties}>
-                    <Board />
-                    <Figures />
-                </div>
-                <Messages />
-                <Display />
-            </main>
-        </>
+        <Provider>
+            <>
+                <Header />
+                <main className='cg-main'>
+                    <div className="cg-game" style={{ '--game-size': GAME_SIZE } as CSSProperties}>
+                        <Board />
+                        <Figures />
+                    </div>
+                    <Messages />
+                    <Display />
+                </main>
+            </>
+        </Provider>
     );
 }

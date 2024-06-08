@@ -39,7 +39,7 @@ export function Figure(props: IFigureProps) {
     const linearGradient = useId();
 
     return (
-        <svg className='figure-svg' viewBox='0 0 87.213272 87.213272'>
+        <svg className='cg-figure-svg' viewBox='0 0 87.213272 87.213272'>
             <defs>
                 <linearGradient id={linearGradient}>
                     <stop style={{ stopColor: col.main, stopOpacity: '1'} as CSSProperties } offset="0" />

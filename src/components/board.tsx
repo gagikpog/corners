@@ -15,12 +15,12 @@ export default function Board() {
                 ITEMS_ARRAY.map((_, index): JSX.Element => {
                     const x = index % (GAME_SIZE + 1);
                     const y = Math.floor(index / (GAME_SIZE + 1));
-                    const fromClassName = lastMove.from.x === x && lastMove.from.y === y ? ' active-from' : '';
-                    const toClassName = lastMove.to.x === x && lastMove.to.y === y ? ' active-to' : '';
-                    const moveToPositionClassName = moves.has(getFigureKey({x, y})) ? ' active-move' : '';
+                    const fromClassName = lastMove.from.x === x && lastMove.from.y === y ? ' cg-active-from' : '';
+                    const toClassName = lastMove.to.x === x && lastMove.to.y === y ? ' cg-active-to' : '';
+                    const moveToPositionClassName = moves.has(getFigureKey({x, y})) ? ' cg-active-move' : '';
 
                     return (
-                        <div className={`item${(index + 1) % (GAME_SIZE + 1) === 0 ? ' hide' : ''}${fromClassName}${toClassName}${moveToPositionClassName}`}
+                        <div className={`cg-item${(index + 1) % (GAME_SIZE + 1) === 0 ? ' cg-hide' : ''}${fromClassName}${toClassName}${moveToPositionClassName}`}
                              key={index}
                              onClick={() => activePlayer && moveSelected({ x , y})}
                         ></div>

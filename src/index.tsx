@@ -1,14 +1,11 @@
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import { Provider } from './context';
 
 const root = ReactDOM.createRoot(
-    document.getElementById('root') as HTMLElement
+    document.getElementById('cg-root') as HTMLElement
 );
 
 root.render(
-    <Provider>
-        <App />
-    </Provider>
+    <App />
 );

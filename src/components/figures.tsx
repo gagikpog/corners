@@ -22,7 +22,7 @@ export function Figures() {
                         '--top': figure.y
                     } as React.CSSProperties;
                     return (
-                        <div key={index} className={`figure`} style={ styles } onClick={() => figureClickHandler(figure)} id={figure.id}>
+                        <div key={index} className={`cg-figure`} style={ styles } onClick={() => figureClickHandler(figure)} id={figure.id}>
                             <Figure
                                 color={figure.color}
                                 selected={selected.x === figure.x && selected.y === figure.y }
