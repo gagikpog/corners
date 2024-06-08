@@ -1,9 +1,10 @@
-import { GAME_SIZE } from '../constants';
 import { IFigure, IPosition } from '../types';
+import { canJump } from './canJump';
 import { getFigureKey } from './getFigureKey';
+import { isValidPos } from './isValidPos';
+import { toMap } from './toMap';
 
 const checkedPositions = new Set<string>();
-
 
 function stepToNeighbor(figure: IFigure, pos: IPosition): boolean {
     return (pos.x === figure.x && Math.abs(pos.y - figure.y) === 1) ||
@@ -16,11 +17,7 @@ export function calculatePath(figures: IFigure[], figure: IFigure, pos: IPositio
         return [pos];
     }
 
-    const figuresMap = figures.reduce((res, item) => {
-        res.set(getFigureKey(item), item);
-        return res;
-    }, new Map());
-
+    const figuresMap = toMap(figures);
 
     checkedPositions.clear();
     const res = findPathStep(figuresMap, figure, pos);
@@ -29,19 +26,6 @@ export function calculatePath(figures: IFigure[], figure: IFigure, pos: IPositio
 
 function comparePos(pos1: IPosition, pos2: IPosition) {
     return pos1.x === pos2.x && pos1.y === pos2.y;
-}
-
-function isValidPos(pos: IPosition) {
-    return pos.x >= 0 && pos.x < GAME_SIZE && pos.y >= 0 && pos.y < GAME_SIZE;
-}
-
-function isEmpty(figuresMap: Map<string, IFigure>, pos: IPosition): boolean {
-    return !figuresMap.get(getFigureKey(pos));
-}
-
-function canJump(figuresMap: Map<string, IFigure>, from: IPosition, to: IPosition): boolean {
-    const middle = { x: (from.x + to.x) / 2, y: (from.y + to.y) / 2 };
-    return !isEmpty(figuresMap, middle) && isEmpty(figuresMap, to);
 }
 
 function findPathStep(figuresMap: Map<string, IFigure>, currentPos: IPosition, endPos: IPosition): IPosition[] {

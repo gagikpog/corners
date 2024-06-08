@@ -153,3 +153,11 @@ main {
 .active-to {
   filter: sepia(1);
 }
+
+.active-move {
+  background-color: #41676d;
+}
+
+.item.active-move:nth-child(2n + 1) {
+  background-color: #9af2ff;
+}

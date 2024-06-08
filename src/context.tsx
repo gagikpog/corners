@@ -8,6 +8,7 @@ import { getPlayerColor } from './helpers/getPlayerColor';
 import { getMessageId } from './helpers/getId';
 import { checkGameEnd } from './helpers/checkGameEnd';
 import { EMPTY_POSITION } from './constants';
+import calculateMoves from './helpers/calculateMoves';
 
 interface IContextData {
     figures: IFigure[];
@@ -19,6 +20,7 @@ interface IContextData {
     messages: IMessage[];
     gameStatus: GameStatus;
     lastMove: ILastMove;
+    moves: Set<string>;
     connectTo(peerId: string): void;
     setSelected(pos: IPosition): void;
     moveSelected(pos: IPosition): void;
@@ -37,6 +39,7 @@ export function Provider({ children }: IProps) {
     const [messages, setMessages] = useState<IMessage[]>([]);
     const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.Game);
     const [lastMove, setLastMove] = useState<ILastMove>({ from: EMPTY_POSITION, to: EMPTY_POSITION });
+    const [moves, setMoves] = useState<Set<string>>(new Set());
     const { connectTo, send, peerId, connected, service } = useService();
 
     const showMessage = useCallback((message: string, type: MessageType = MessageType.Info) => {
@@ -82,6 +85,14 @@ export function Provider({ children }: IProps) {
             });
         }
     }, [numberOfMoves, firstPlayer, connected]);
+
+    useEffect(() => {
+        if (selected.x !== EMPTY_POSITION.x && selected.y !== EMPTY_POSITION.y) {
+            setMoves(calculateMoves(selected, figures));
+        } else {
+            setMoves(new Set());
+        }
+    }, [selected, figures]);
 
     useEffect(() => {
         return service.subscribe<IRequest>(ServiceEvents.Data, (data) => {
@@ -146,6 +157,7 @@ export function Provider({ children }: IProps) {
             numberOfMoves,
             gameStatus,
             lastMove,
+            moves,
             connectTo,
             setSelected,
             moveSelected,
@@ -161,6 +173,7 @@ export function Provider({ children }: IProps) {
         numberOfMoves,
         gameStatus,
         lastMove,
+        moves,
         connectTo,
         setSelected,
         moveSelected,
