@@ -4,8 +4,11 @@
     display: grid;
     grid-template-columns: repeat(calc(var(--game-size) + 1), min-content);
     position: relative;
-    border: 1px solid #222;
     animation-duration: 1s;
+}
+
+.cg-game-board {
+    border: 1px solid #222;
 }
 
 .cg-board-rotated-180 {

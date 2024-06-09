@@ -1,0 +1,4 @@
+.cg-qr {
+    --figure-size: calc(min(100vw - 40px, 100vh - 80px) / var(--qt-size));
+    display: grid;
+}

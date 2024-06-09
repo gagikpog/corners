@@ -5,10 +5,11 @@ import { generateUrl, getPeerId } from '../helpers/url';
 import { MessageType } from '../types';
 import { Copy } from './icon/copy';
 import { Paste } from './icon/paste';
+import { QrIcon } from './icon/qr';
 
 export function Header() {
 
-    const { peerId, activePlayer, connected, numberOfMoves, connectTo, showMessage } = useContext(Context);
+    const { peerId, activePlayer, connected, numberOfMoves, connectTo, showMessage, setQrVisible } = useContext(Context);
 
     const copyHandler = useCallback(() => {
         copy(generateUrl(peerId)).then(() => {
@@ -32,6 +33,10 @@ export function Header() {
         });
     }, [connectTo, showMessage]);
 
+    const toggleQr = useCallback(() => {
+        setQrVisible((val) => !val);
+    }, [setQrVisible])
+
     return (
         <header className='cg-header'>
             <div className="cg-logo">Corners</div>
@@ -49,6 +54,7 @@ export function Header() {
                     }
                 </div>
                 <div className="cg-toolbar">
+                    { connected ? null : <QrIcon onClick={toggleQr} className='cg-button' /> }
                     <Paste onClick={pasteHandler} className='cg-button' />
                     <Copy onClick={copyHandler} className='cg-button' />
                 </div>
