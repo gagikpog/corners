@@ -29,6 +29,12 @@ export enum GameStatus {
     Draw = 'draw'
 }
 
+export enum BoardRotate {
+    Unset = '-',
+    Default = '0',
+    Rotated = '180'
+}
+
 export interface IProps {
     className?: string;
     children?: JSX.Element;

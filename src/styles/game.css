@@ -1,0 +1,55 @@
+.cg-game {
+    --item-size: calc(min(100vw - 40px, 100vh - 80px) / var(--game-size));
+    --figure-size: calc(var(--item-size) * 0.8);
+    display: grid;
+    grid-template-columns: repeat(calc(var(--game-size) + 1), min-content);
+    position: relative;
+    border: 1px solid #222;
+    animation-duration: 1s;
+}
+
+.cg-board-rotated-180 {
+    animation-name: board-rotate-180;
+    transform: rotate(180deg);
+}
+
+.cg-board-rotated-0 {
+    animation-name: board-rotate-0;
+    transform: rotate(0deg);
+}
+
+@keyframes board-rotate-180 {
+    from {
+        transform: rotate(0deg) scale(1);
+    }
+
+    30% {
+        transform: rotate(0deg) scale(0.5);
+    }
+
+    70% {
+        transform: rotate(180deg)  scale(0.5);
+    }
+
+    to {
+        transform: rotate(180deg);
+    }
+}
+
+@keyframes board-rotate-0 {
+    from {
+        transform: rotate(180deg) scale(1);
+    }
+
+    30% {
+        transform: rotate(180deg) scale(0.5);
+    }
+
+    70% {
+        transform: rotate(0deg)  scale(0.5);
+    }
+
+    to {
+        transform: rotate(0deg);
+    }
+}

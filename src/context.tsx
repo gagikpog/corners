@@ -1,5 +1,5 @@
-import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
-import { Color, GameStatus, IFigure, ILastMove, IMessage, IPosition, IProps, IRequest, ISettings, MessageType, ResponseActions, ServiceEvents } from './types';
+import { Dispatch, SetStateAction, createContext, useCallback, useEffect, useMemo, useState } from 'react';
+import { BoardRotate, Color, GameStatus, IFigure, ILastMove, IMessage, IPosition, IProps, IRequest, ISettings, MessageType, ResponseActions, ServiceEvents } from './types';
 import { generateFigures } from './helpers/generateFigures';
 import { useService } from './hooks/useService';
 import { calculatePath } from './helpers/calculatePath';
@@ -22,11 +22,13 @@ interface IContextData {
     lastMove: ILastMove;
     moves: Set<string>;
     settings: ISettings;
+    boardRotate: BoardRotate;
     connectTo(peerId: string): void;
     setSelected(pos: IPosition): void;
     moveSelected(pos: IPosition): void;
     showMessage(message: string, type?: MessageType): void;
     setSettings(settings: ISettings): void;
+    setBoardRotate: Dispatch<SetStateAction<BoardRotate>>;
 }
 
 export const Context = createContext<IContextData>({} as IContextData);
@@ -43,6 +45,7 @@ export function Provider({ children }: IProps) {
     const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.Game);
     const [lastMove, setLastMove] = useState<ILastMove>({ from: EMPTY_POSITION, to: EMPTY_POSITION });
     const [moves, setMoves] = useState<Set<string>>(new Set());
+    const [boardRotate, setBoardRotate] = useState<BoardRotate>(BoardRotate.Unset);
 
     const showMessage = useCallback((message: string, type: MessageType = MessageType.Info) => {
         const data: IMessage = {
@@ -165,11 +168,13 @@ export function Provider({ children }: IProps) {
             lastMove,
             moves,
             settings,
+            boardRotate,
             connectTo,
             setSelected,
             moveSelected,
             showMessage,
-            setSettings
+            setSettings,
+            setBoardRotate
         };
     }, [
         figures,
@@ -183,11 +188,13 @@ export function Provider({ children }: IProps) {
         lastMove,
         moves,
         settings,
+        boardRotate,
         connectTo,
         setSelected,
         moveSelected,
         showMessage,
-        setSettings
+        setSettings,
+        setBoardRotate
     ]);
 
     return (

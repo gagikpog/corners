@@ -1,13 +1,10 @@
-import { CSSProperties } from 'react';
 import './App.css';
-import Board from './components/board';
-import { Figures } from './components/figures';
 import { Header } from './components/header';
 import { Messages } from './components/messages';
-import { GAME_SIZE } from './constants';
 import { Display } from './components/display';
 import { Provider } from './context';
 import { Settings } from './components/settings';
+import { Game } from './components/game';
 
 export default function App() {
 
@@ -17,10 +14,7 @@ export default function App() {
                 <Header />
                 <main className='cg-main'>
                     <Settings/>
-                    <div className="cg-game" style={{ '--game-size': GAME_SIZE } as CSSProperties}>
-                        <Board />
-                        <Figures />
-                    </div>
+                    <Game />
                     <Messages />
                     <Display />
                 </main>

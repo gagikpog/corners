@@ -1,0 +1,21 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.cg-html, .cg-body {
+    height: 100%;
+}
+
+.cg-body {
+    display: flex;
+    flex-direction: column;
+}
+
+#cg-root {
+    display: contents;
+}
+
+#cg-root a:visited {
+    color: #0000ee;
+}

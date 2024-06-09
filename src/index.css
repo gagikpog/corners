@@ -1,20 +1,4 @@
-* {
-  padding: 0;
-  margin: 0;
-}
 
-.cg-html, .cg-body {
-  height: 100%;
-}
-
-.cg-body {
-  display: flex;
-  flex-direction: column;
-}
-
-#cg-root {
-  display: contents;
-}
 
 .cg-header {
   height: 40px;
@@ -89,16 +73,13 @@
 .cg-settings-panel-content {
   display: grid;
   grid-template-columns: auto auto;
+  gap: 4px;
 }
 
-.cg-game {
-  --item-size: calc(min(100vw - 40px, 100vh - 80px) / var(--game-size));
-  --figure-size: calc(var(--item-size) * 0.8);
-  display: grid;
-  grid-template-columns: repeat(calc(var(--game-size) + 1), min-content);
-  position: relative;
-  border: 1px solid #222;
+.cg-settings-col-2 {
+  grid-column: 1 / 3;
 }
+
 
 .cg-item {
   width: var(--item-size);
@@ -139,6 +120,15 @@
   width: calc(var(--figure-size) * 0.2);
   height: calc(var(--figure-size) * 0.2);
   pointer-events: none;
+  transition: transform 1s;
+}
+
+.cg-board-rotated-180 .cg-figure-crown {
+  transform: rotate(180deg);
+}
+
+.cg-board-rotated-0 .cg-figure-crown {
+  transform: rotate(0deg);
 }
 
 .cg-messages {
