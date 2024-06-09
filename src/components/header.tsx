@@ -37,7 +37,7 @@ export function Header() {
             <div className="cg-logo">Corners</div>
                 <div className='cg-status-bar'>
                     <div>
-                        { connected ? activePlayer ? 'your move' : `opponent's move` : 'opponent is not connected' }
+                        { connected ? activePlayer ? 'your move' : `opponent's move` : 'not connected' }
                     </div>
                     {
                         numberOfMoves ? (

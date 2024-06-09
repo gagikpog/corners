@@ -134,6 +134,13 @@
   transition: width 0.5s, height 0.5s;
 }
 
+.cg-figure-crown {
+  position: absolute;
+  width: calc(var(--figure-size) * 0.2);
+  height: calc(var(--figure-size) * 0.2);
+  pointer-events: none;
+}
+
 .cg-messages {
   position: absolute;
   right: 10px;

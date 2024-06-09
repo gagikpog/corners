@@ -3,10 +3,11 @@ import { Context } from '../context';
 import { Figure } from './figure';
 import { IFigure } from '../types';
 import { EMPTY_POSITION } from '../constants';
+import { Crown } from './icon/crown';
 
 export function Figures() {
 
-    const {figures, selected, activePlayer, setSelected} = useContext(Context);
+    const {figures, selected, activePlayer, setSelected, connected} = useContext(Context);
 
     const figureClickHandler = useCallback((figure: IFigure) => {
         const canSelect = figure.owner;
@@ -27,6 +28,9 @@ export function Figures() {
                                 color={figure.color}
                                 selected={selected.x === figure.x && selected.y === figure.y }
                             />
+                            {
+                                figure.owner && connected ? <Crown className='cg-figure-crown' color={figure.color}/> : null
+                            }
                         </div>
                     );
                 })
