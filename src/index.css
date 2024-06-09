@@ -43,9 +43,6 @@
 
 .cg-button {
   cursor: pointer;
-  background-color: transparent;
-  border: none;
-  user-select: none;
 }
 
 .cg-main {

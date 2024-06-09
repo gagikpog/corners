@@ -18,7 +18,6 @@ export function Settings() {
             itemsHight: Number(h),
             itemsWidth: Number(w)
         });
-        console.log(target.value);
     }, [settings,setSettings]);
 
     const size = `${settings.itemsWidth}x${settings.itemsHight}`;

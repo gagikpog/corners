@@ -32,6 +32,7 @@ export enum GameStatus {
 export interface IProps {
     className?: string;
     children?: JSX.Element;
+    onClick?(): void;
 }
 
 export interface IPosition {

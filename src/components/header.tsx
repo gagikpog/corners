@@ -3,6 +3,8 @@ import { Context } from '../context';
 import { copy, paste } from '../helpers/clipboard';
 import { generateUrl, getPeerId } from '../helpers/url';
 import { MessageType } from '../types';
+import { Copy } from './icon/copy';
+import { Paste } from './icon/paste';
 
 export function Header() {
 
@@ -47,8 +49,8 @@ export function Header() {
                     }
                 </div>
                 <div className="cg-toolbar">
-                    <button className='cg-button' onClick={pasteHandler}>Paste URL</button>
-                    <button className='cg-button' onClick={copyHandler}>Copy URL</button>
+                    <Paste onClick={pasteHandler} className='cg-button' />
+                    <Copy onClick={copyHandler} className='cg-button' />
                 </div>
         </header>
     );
