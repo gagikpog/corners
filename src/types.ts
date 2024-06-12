@@ -12,6 +12,7 @@ export enum ServiceEvents {
 
 export enum ResponseActions {
     Play = 'play',
+    NewGame = 'newGame',
     SyncSettings = 'syncSettings',
     Connect = 'connect'
 }

@@ -2,14 +2,15 @@ import { useCallback, useContext } from 'react';
 import { Context } from '../context';
 import { copy, paste } from '../helpers/clipboard';
 import { generateUrl, getPeerId } from '../helpers/url';
-import { MessageType } from '../types';
+import { GameStatus, MessageType } from '../types';
 import { Copy } from './icon/copy';
 import { Paste } from './icon/paste';
 import { QrIcon } from './icon/qr';
+import { Reload } from './icon/reload';
 
 export function Header() {
 
-    const { peerId, activePlayer, connected, numberOfMoves, connectTo, showMessage, setQrVisible } = useContext(Context);
+    const { peerId, activePlayer, connected, numberOfMoves, gameStatus, connectTo, showMessage, setQrVisible, newGame } = useContext(Context);
 
     const copyHandler = useCallback(() => {
         copy(generateUrl(peerId)).then(() => {
@@ -37,6 +38,10 @@ export function Header() {
         setQrVisible((val) => !val);
     }, [setQrVisible])
 
+    const reloadHandler = useCallback(() => {
+        newGame(true);
+    }, [newGame]);
+
     return (
         <header className='cg-header'>
             <div className="cg-logo">Corners</div>
@@ -55,6 +60,7 @@ export function Header() {
                 </div>
                 <div className="cg-toolbar">
                     { connected ? null : <QrIcon onClick={toggleQr} className='cg-button' /> }
+                    { gameStatus === GameStatus.Game ? null : <Reload onClick={reloadHandler} className='cg-button' /> }
                     <Paste onClick={pasteHandler} className='cg-button' />
                     <Copy onClick={copyHandler} className='cg-button' />
                 </div>

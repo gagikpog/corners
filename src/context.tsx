@@ -31,13 +31,14 @@ interface IContextData {
     setSettings(settings: ISettings): void;
     setBoardRotate: Dispatch<SetStateAction<BoardRotate>>;
     setQrVisible: Dispatch<SetStateAction<boolean>>;
+    newGame(needSync?: boolean): void;
 }
 
 export const Context = createContext<IContextData>({} as IContextData);
 
 export function Provider({ children }: IProps) {
 
-    const { connectTo, sendMove, setSettings, peerId, connected, service, settings } = useService();
+    const { connectTo, sendMove, setSettings, sendNewGame, peerId, connected, service, settings } = useService();
     const [activePlayer, setActivePlayer] = useState<boolean>(false);
     const [firstPlayer, setFirstPlayer] = useState<boolean>(false);
     const [figures, setFigures] = useState<IFigure[]>(generateFigures(Color.Black, settings));
@@ -49,6 +50,22 @@ export function Provider({ children }: IProps) {
     const [moves, setMoves] = useState<Set<string>>(new Set());
     const [boardRotate, setBoardRotate] = useState<BoardRotate>(BoardRotate.Unset);
     const [qrVisible, setQrVisible] = useState<boolean>(false);
+
+    const newGame = useCallback((needSync: boolean = false) => {
+        setFirstPlayer((value) => {
+            const newValue = !value;
+            setActivePlayer(newValue);
+            return newValue;
+        });
+        setSelected(EMPTY_POSITION);
+        setNumberOfMoves(0);
+        setLastMove({ from: EMPTY_POSITION, to: EMPTY_POSITION });
+        setMoves(new Set());
+        setGameStatus(GameStatus.Game);
+        if (needSync) {
+            sendNewGame();
+        }
+    }, [sendNewGame]);
 
     const showMessage = useCallback((message: string, type: MessageType = MessageType.Info) => {
         const data: IMessage = {
@@ -124,25 +141,27 @@ export function Provider({ children }: IProps) {
                         });
                     }
                     break;
+                case ResponseActions.NewGame:
+                    newGame();
+                    break;
             }
         });
-    }, [service, figures]);
+    }, [service, figures, newGame]);
 
     useEffect(() => {
         return service.subscribe<boolean>(ServiceEvents.Connection ,(connected: boolean) => {
             const {extPickId, peerId} = service.getPeerIds();
             const color = getPlayerColor(peerId, extPickId);
-            setActivePlayer(color === Color.Black);
-            setFirstPlayer(color === Color.Black);
+            const isFirst = color === Color.Black;
+            setActivePlayer(isFirst);
+            setFirstPlayer(isFirst);
             showMessage('Connecting to an opponent!');
         });
     }, [service, showMessage]);
 
     useEffect(() => {
-        const {extPickId, peerId} = service.getPeerIds();
-        const color = getPlayerColor(peerId, extPickId);
-        setFigures(generateFigures(color, settings));
-    }, [service, settings, connected]);
+        setFigures(generateFigures(firstPlayer ? Color.Black : Color.White, settings));
+    }, [service, settings, connected, firstPlayer]);
 
     useEffect(() => {
         const subscribers = [
@@ -179,7 +198,8 @@ export function Provider({ children }: IProps) {
             showMessage,
             setSettings,
             setBoardRotate,
-            setQrVisible
+            setQrVisible,
+            newGame
         };
     }, [
         figures,
@@ -201,7 +221,8 @@ export function Provider({ children }: IProps) {
         showMessage,
         setSettings,
         setBoardRotate,
-        setQrVisible
+        setQrVisible,
+        newGame
     ]);
 
     return (

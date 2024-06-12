@@ -37,6 +37,17 @@ export function useService() {
         });
     }, []);
 
+    const sendNewGame = useCallback(() => {
+        service.current.send({
+            needResult: false,
+            callId: '',
+            data: {
+                action: ResponseActions.NewGame,
+                payload: null
+            }
+        });
+    }, []);
+
     const setSettings = useCallback((settings: ISettings) => {
         updateSettings(settings);
         service.current.send({
@@ -64,6 +75,6 @@ export function useService() {
         service.current.connectTo(peerId, false);
     }, []);
 
-    return { sendMove, setSettings, connectTo, settings, peerId, connected, service: service.current };
+    return { sendMove, sendNewGame, setSettings, connectTo, settings, peerId, connected, service: service.current };
 
 }
