@@ -61,8 +61,8 @@ export function Header() {
                 <div className="cg-toolbar">
                     { connected ? null : <QrIcon onClick={toggleQr} className='cg-button' /> }
                     { gameStatus === GameStatus.Game ? null : <Reload onClick={reloadHandler} className='cg-button' /> }
-                    <Paste onClick={pasteHandler} className='cg-button' />
-                    <Copy onClick={copyHandler} className='cg-button' />
+                    { connected ? null : <Paste onClick={pasteHandler} className='cg-button' /> }
+                    { connected ? null : <Copy onClick={copyHandler} className='cg-button' /> }
                 </div>
         </header>
     );
