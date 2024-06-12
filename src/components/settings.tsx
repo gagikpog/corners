@@ -52,7 +52,7 @@ export function Settings() {
                         <option value="4x4">4x4</option>
                     </select>
                     <div className='cg-settings-col-2'>
-                        <a onClick={rotateBoard} href="/" >Rotate board</a>
+                        <a onClick={rotateBoard} href="/" >Rotate desc</a>
                     </div>
                 </div>
             </div>
