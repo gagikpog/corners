@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot</title>
+</head>
+<body>
+    <script>
+        // http://localhost:3000/bot.html
+        class Bot {
+            _map = [];
+
+            init({ map, isFirst }) {
+                this._map = map;
+                this._isFirst = isFirst;
+                if(this._isFirst) {
+                    this.step({});
+                }
+            }
+
+            step({ from, to }) {
+                if (from && to) {
+                    this._move({ from, to });
+                }
+
+                const move = this._searchMove(this._map);
+                this._move(move);
+                this._send({ action: 'step', payload: move });
+            }
+
+            /**
+             * @param map {{ owner: boolean, x: number, y: number }[]}
+             * @return {{ from: {x: number, y: number}, to: {x: number, y: number } }}
+             */
+            _searchMove(map) {
+                // bot here
+
+                return { from: { x: 2, y: 0 }, to: { x: 4, y: 0 } };
+            }
+
+            _send(data) {
+                window.parent.postMessage(data, '*');
+            }
+
+            _move({ from, to }) {
+                const current = this._map.find((item) => item.x === from.x && item.y === from.y);
+                current.x = to.x;
+                current.y = to.y;
+            }
+        }
+
+        const bot = new Bot();
+
+        window.addEventListener('message', function(event) {
+            const data = event.data;
+            switch (data.action) {
+                case 'step':
+                    bot.step(data.payload);
+                    break;
+                case 'init':
+                    bot.init(data.payload);
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>
+

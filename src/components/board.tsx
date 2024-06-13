@@ -7,7 +7,7 @@ const ITEMS_ARRAY = Array(GAME_SIZE * (GAME_SIZE + 1)).fill(null);
 
 export default function Board() {
 
-    const { moveSelected, activePlayer, lastMove, moves } = useContext(Context);
+    const { moveSelected, activePlayer, lastMove, moves, selected, botUrl } = useContext(Context);
 
     return (
         <>
@@ -22,7 +22,7 @@ export default function Board() {
                     return (
                         <div className={`cg-item${(index + 1) % (GAME_SIZE + 1) === 0 ? ' cg-hide' : ''}${fromClassName}${toClassName}${moveToPositionClassName}`}
                              key={index}
-                             onClick={() => activePlayer && moveSelected({ x , y})}
+                             onClick={() => activePlayer && !botUrl && moveSelected({ from: selected, to: { x , y}})}
                         ></div>
                     );
                 })

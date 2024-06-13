@@ -7,12 +7,12 @@ import { Crown } from './icon/crown';
 
 export function Figures() {
 
-    const {figures, selected, activePlayer, setSelected, connected} = useContext(Context);
+    const {figures, selected, activePlayer, botUrl, setSelected, connected} = useContext(Context);
 
     const figureClickHandler = useCallback((figure: IFigure) => {
         const canSelect = figure.owner;
-        setSelected(canSelect && activePlayer ? { x: figure.x, y: figure.y } : EMPTY_POSITION);
-    }, [setSelected, activePlayer]);
+        setSelected(canSelect && activePlayer && !botUrl ? { x: figure.x, y: figure.y } : EMPTY_POSITION);
+    }, [setSelected, activePlayer, botUrl]);
 
     return (
         <>

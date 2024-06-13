@@ -9,6 +9,7 @@ import { getMessageId } from './helpers/getId';
 import { checkGameEnd } from './helpers/checkGameEnd';
 import { EMPTY_POSITION } from './constants';
 import calculateMoves from './helpers/calculateMoves';
+import { sendBot } from './helpers/sendBot';
 
 interface IContextData {
     figures: IFigure[];
@@ -24,14 +25,17 @@ interface IContextData {
     settings: ISettings;
     boardRotate: BoardRotate;
     qrVisible: boolean;
+    firstPlayer: boolean;
+    botUrl: string;
     connectTo(peerId: string): void;
     setSelected(pos: IPosition): void;
-    moveSelected(pos: IPosition): void;
+    moveSelected(move: ILastMove): void;
     showMessage(message: string, type?: MessageType): void;
     setSettings(settings: ISettings): void;
     setBoardRotate: Dispatch<SetStateAction<BoardRotate>>;
     setQrVisible: Dispatch<SetStateAction<boolean>>;
     newGame(needSync?: boolean): void;
+    setBotUrl(url: string): void;
 }
 
 export const Context = createContext<IContextData>({} as IContextData);
@@ -50,6 +54,7 @@ export function Provider({ children }: IProps) {
     const [moves, setMoves] = useState<Set<string>>(new Set());
     const [boardRotate, setBoardRotate] = useState<BoardRotate>(BoardRotate.Unset);
     const [qrVisible, setQrVisible] = useState<boolean>(false);
+    const [botUrl, setBotUrl] = useState<string>('');
 
     const newGame = useCallback((needSync: boolean = false) => {
         setFirstPlayer((value) => {
@@ -79,27 +84,26 @@ export function Provider({ children }: IProps) {
         }, 3000);
     }, []);
 
-    const moveSelected = useCallback((pos: IPosition) => {
-        if (selected.x !== EMPTY_POSITION.x && selected.y !== EMPTY_POSITION.y) {
-            const figure = figures.find((item) => item.x === selected.x && item.y === selected.y);
+    const moveSelected = useCallback(({ from, to }: ILastMove) => {
+        if (from.x !== EMPTY_POSITION.x && from.y !== EMPTY_POSITION.y) {
+            const figure = figures.find((item) => item.x === from.x && item.y === from.y);
             if (figure) {
-                const path = calculatePath(figures, figure, pos);
+                const path = calculatePath(figures, figure, to);
                 if (path.length) {
-                    sendMove({ from: { x: figure.x, y: figure.y }, path });
+                    sendMove({ from, path });
                     setActivePlayer(false);
                     setSelected(EMPTY_POSITION);
                     moveTo(figure, path).then(() => {
-                        setLastMove({ from: { x: figure.x, y: figure.y }, to: pos });
-                        figure.x = pos.x;
-                        figure.y = pos.y;
+                        setLastMove({ from, to });
+                        figure.x = to.x;
+                        figure.y = to.y;
                         setFigures((prev) => [...prev]);
                         setNumberOfMoves((n) => n + 1);
                     });
                 }
             }
         }
-
-    }, [figures, selected, sendMove]);
+    }, [figures, sendMove]);
 
     useEffect(() => {
         if (connected && numberOfMoves && numberOfMoves % 2 === 0) {
@@ -131,13 +135,17 @@ export function Provider({ children }: IProps) {
                     if (figure) {
                         moveTo(figure, path).then(() => {
                             const pos = path[path.length -1];
-                            setLastMove({ from: { x: figure.x, y: figure.y }, to: pos });
+                            const move = { from: { x: figure.x, y: figure.y }, to: pos };
+                            setLastMove(move);
                             figure.x = pos.x;
                             figure.y = pos.y;
                             setFigures((prev) => [...prev]);
                             setSelected(EMPTY_POSITION);
                             setNumberOfMoves((n) => n + 1);
                             setActivePlayer(true);
+                            if (botUrl) {
+                                sendBot(move);
+                            }
                         });
                     }
                     break;
@@ -146,7 +154,7 @@ export function Provider({ children }: IProps) {
                     break;
             }
         });
-    }, [service, figures, newGame]);
+    }, [service, figures, botUrl, newGame]);
 
     useEffect(() => {
         return service.subscribe<boolean>(ServiceEvents.Connection ,(connected: boolean) => {
@@ -192,6 +200,8 @@ export function Provider({ children }: IProps) {
             settings,
             boardRotate,
             qrVisible,
+            firstPlayer,
+            botUrl,
             connectTo,
             setSelected,
             moveSelected,
@@ -199,7 +209,8 @@ export function Provider({ children }: IProps) {
             setSettings,
             setBoardRotate,
             setQrVisible,
-            newGame
+            newGame,
+            setBotUrl
         };
     }, [
         figures,
@@ -215,6 +226,8 @@ export function Provider({ children }: IProps) {
         settings,
         boardRotate,
         qrVisible,
+        firstPlayer,
+        botUrl,
         connectTo,
         setSelected,
         moveSelected,
@@ -222,7 +235,8 @@ export function Provider({ children }: IProps) {
         setSettings,
         setBoardRotate,
         setQrVisible,
-        newGame
+        newGame,
+        setBotUrl
     ]);
 
     return (

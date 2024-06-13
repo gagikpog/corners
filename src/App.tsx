@@ -5,6 +5,7 @@ import { Display } from './components/display';
 import { Provider } from './context';
 import { Settings } from './components/settings';
 import { Game } from './components/game';
+import { Bot } from './components/bot';
 
 export default function App() {
 
@@ -17,6 +18,7 @@ export default function App() {
                     <Game />
                     <Messages />
                     <Display />
+                    <Bot />
                 </main>
             </>
         </Provider>

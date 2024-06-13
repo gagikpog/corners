@@ -79,3 +79,8 @@ export interface ISettings {
     itemsWidth: number;
     itemsHight: number;
 }
+
+export interface IFrameMessage {
+    action: 'init' | 'step';
+    payload: ILastMove | {isFirst: boolean, map: IFigure[]};
+}
