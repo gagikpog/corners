@@ -45,8 +45,10 @@
 
             _move({ from, to }) {
                 const current = this._map.find((item) => item.x === from.x && item.y === from.y);
-                current.x = to.x;
-                current.y = to.y;
+                if (current) {
+                    current.x = to.x;
+                    current.y = to.y;
+                }
             }
         }
 

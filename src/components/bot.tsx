@@ -13,8 +13,16 @@ export function Bot() {
     const onMessage = useCallback((event: MessageEvent<IFrameMessage>) => {
         switch (event.data.action) {
             case 'step':
-                moveSelected(event.data.payload as ILastMove);
+                const move = event.data.payload as ILastMove;
+                const moved = moveSelected(move);
+                if (!moved) {
+                    console.error(`Invalid move from [${move.from.y}, ${move.from.y}] to [${move.to.y}, ${move.to.y}]`);
+                }
                 break;
+            default:
+                if (event.data.action) {
+                    console.error(`Invalid action "${event.data.action}"`);
+                }
         }
     }, [moveSelected]);
 

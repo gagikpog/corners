@@ -29,7 +29,7 @@ interface IContextData {
     botUrl: string;
     connectTo(peerId: string): void;
     setSelected(pos: IPosition): void;
-    moveSelected(move: ILastMove): void;
+    moveSelected(move: ILastMove): boolean;
     showMessage(message: string, type?: MessageType): void;
     setSettings(settings: ISettings): void;
     setBoardRotate: Dispatch<SetStateAction<BoardRotate>>;
@@ -84,7 +84,7 @@ export function Provider({ children }: IProps) {
         }, 3000);
     }, []);
 
-    const moveSelected = useCallback(({ from, to }: ILastMove) => {
+    const moveSelected = useCallback(({ from, to }: ILastMove): boolean => {
         if (from.x !== EMPTY_POSITION.x && from.y !== EMPTY_POSITION.y) {
             const figure = figures.find((item) => item.x === from.x && item.y === from.y);
             if (figure) {
@@ -100,9 +100,11 @@ export function Provider({ children }: IProps) {
                         setFigures((prev) => [...prev]);
                         setNumberOfMoves((n) => n + 1);
                     });
+                    return true;
                 }
             }
         }
+        return false;
     }, [figures, sendMove]);
 
     useEffect(() => {
