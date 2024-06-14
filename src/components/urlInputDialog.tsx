@@ -4,9 +4,10 @@ import { IProps } from '../types';
 
 interface IUrlInputDialog extends IProps {
     onInput?(url: string): void;
+    onCancel?(): void;
 }
 
-export function UrlInputDialog({onInput}: IUrlInputDialog) {
+export function UrlInputDialog({onInput, onCancel}: IUrlInputDialog) {
 
     const inputRef = useRef<HTMLInputElement>(null)
 
@@ -17,8 +18,10 @@ export function UrlInputDialog({onInput}: IUrlInputDialog) {
     const onKeyDown = useCallback((event: KeyboardEvent) => {
         if (event.code === 'Enter' || event.code === 'NumpadEnter') {
             onInput?.(inputRef.current?.value || '');
+        } else if (event.code === 'Escape') {
+            onCancel?.();
         }
-    }, [onInput]);
+    }, [onInput, onCancel]);
 
     return (
         <div className="cg-url-dialog-overlay" >

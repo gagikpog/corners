@@ -5,8 +5,10 @@ import { UrlInputDialog } from './urlInputDialog';
 
 export function Bot() {
     const frameRef = useRef<HTMLIFrameElement>(null);
+    const isInitRef = useRef<boolean>(false);
     const { activePlayer, numberOfMoves, figures, connected, botUrl, setBotUrl, showMessage, moveSelected } = useContext(Context);
     const [inputOpened, setInputOpened] = useState(false);
+    const frame = frameRef.current;
 
     const onMessage = useCallback((event: MessageEvent<IFrameMessage>) => {
         switch (event.data.action) {
@@ -26,9 +28,8 @@ export function Bot() {
         if (url) {
             setInputOpened(false);
             setBotUrl(url);
-            showMessage('Bot activated!');
         }
-    }, [setBotUrl, showMessage]);
+    }, [setBotUrl]);
 
     useEffect(() => {
         window.addEventListener('message', onMessage);
@@ -43,9 +44,10 @@ export function Bot() {
     }, [onKeyDown, botUrl]);
 
     useEffect(() => {
-        if (frameRef.current && !numberOfMoves) {
+        if (frame && !numberOfMoves && !isInitRef.current) {
+            isInitRef.current = true;
             setTimeout(() => {
-                frameRef.current?.contentWindow?.postMessage({
+                frame.contentWindow?.postMessage({
                     action: 'init',
                     payload: {
                         isFirst: activePlayer,
@@ -54,12 +56,14 @@ export function Bot() {
                 }, '*');
             }, 50);
         }
-    }, [frameRef.current, activePlayer, figures, numberOfMoves]);
+    }, [frame, activePlayer, figures, numberOfMoves, isInitRef]);
+
+    const onLoad = useCallback(() => showMessage('Bot activated!'), [showMessage]);
 
     return (
         <div>
-            { botUrl && connected ? <iframe id="bot-frame" className="cg-hidden" ref={frameRef} src={botUrl} title="bot"/> : null }
-            { inputOpened ? <UrlInputDialog onInput={onInput} /> : null }
+            { botUrl && connected ? <iframe id="bot-frame" className="cg-hidden" ref={frameRef} src={botUrl} title="bot" onLoad={onLoad} /> : null }
+            { inputOpened ? <UrlInputDialog onInput={onInput} onCancel={() => setInputOpened(false)} /> : null }
         </div>
     );
 }
