@@ -8,6 +8,124 @@
 <body>
     <script>
         // http://localhost:3000/bot.html
+        const GAME_SIZE = 8;
+        const checkedPositions = new Set();
+
+        const getKey = (pos) => `x: ${pos.x},y:${pos.y}`;
+        const isValidPos = (pos) => pos.x >= 0 && pos.x < GAME_SIZE && pos.y >= 0 && pos.y < GAME_SIZE;
+        const isPositionEmpty = (figuresMap, pos) => !figuresMap.get(getKey(pos));
+        const sqr = (v) => v*v;
+        const getDistance = ({ from, to }) => Math.sqrt(sqr(from.x - to.x) + sqr(from.y - to.y));
+        const getDirection = (item, end) => getDistance({from: item.from, to: end }) > getDistance({ from: item.to, to: end }) ? 1 : -1;
+
+        function canJump(figuresMap, from, to) {
+            const middle = { x: (from.x + to.x) / 2, y: (from.y + to.y) / 2 };
+            return !isPositionEmpty(figuresMap, middle) && isPositionEmpty(figuresMap, to) && isValidPos(to);
+        }
+
+        function toMap(map) {
+            return map.reduce((res, item) => {
+                res.set(getKey(item), item);
+                return res;
+            }, new Map());
+        }
+
+        function getNeighborMoves(position, figuresMap) {
+            const leftPos = { x: position.x - 1, y: position.y };
+            const rightPos = { x: position.x + 1, y: position.y };
+            const topPos = { x: position.x, y: position.y - 1};
+            const bottomPos = { x: position.x, y: position.y + 1};
+            return [leftPos, rightPos, topPos, bottomPos].filter((pos) => isValidPos(pos) && isPositionEmpty(figuresMap, pos));
+        }
+
+        function getJumpMoves(currentPos, itemMap) {
+            if (!isValidPos(currentPos) || checkedPositions.has(getKey(currentPos))) {
+                return [];
+            }
+            checkedPositions.add(getKey(currentPos));
+
+            const leftPos = { x: currentPos.x - 2, y: currentPos.y };
+            const rightPos = { x: currentPos.x + 2, y: currentPos.y };
+            const topPos = { x: currentPos.x, y: currentPos.y - 2};
+            const bottomPos = { x: currentPos.x, y: currentPos.y + 2};
+
+            const positions = [leftPos, rightPos, topPos, bottomPos];
+
+            return positions.reduce((res, jumpPos) => {
+                if (!canJump(itemMap, currentPos, jumpPos)) {
+                    return res;
+                }
+
+                const resPos = getJumpMoves(jumpPos, itemMap);
+                return [...res, jumpPos, ...resPos];
+            }, []);
+        }
+
+        function getMovesForItem(map, position) {
+            const itemMap = toMap(map);
+            checkedPositions.clear();
+
+            const moves = getNeighborMoves(position, itemMap);
+            moves.push(...getJumpMoves(position, itemMap));
+
+            return moves;
+        }
+
+        function getMoves(map, frozenSet) {
+            return map.filter((item) => item.owner && !frozenSet.has(getKey(item))).reduce((result, item) => {
+                const from = { x: item.x, y: item.y };
+                getMovesForItem(map, from).forEach((to) => {
+                    result.push({from, to})
+                });
+                return result;
+            }, []);
+        }
+
+        function getBestMove(moves, end) {
+            moves.forEach((item) => {
+                const distanceFrom = end ? getDistance({from: item.from, to: end}) : 0;
+                const distanceTo = end ? getDistance({from: item.to, to: end}) : 0;
+                item.rating = (distanceFrom * 1.1 - distanceTo);
+            });
+
+            return moves.reduce((prev, item) => prev.rating > item.rating ? prev : item);
+        }
+
+        function calcEnd(map, isFirst) {
+            const itemsMap = toMap(map);
+            const frozenSet = new Set();
+            let end;
+
+            const iteration = (x, y) => {
+                const key = getKey({ x, y });
+                const item = itemsMap.get(key);
+
+                if (item && item.owner) {
+                    if (!end) {
+                        frozenSet.add(key);
+                    }
+                } else if (!end) {
+                    end = { x, y };
+                }
+            }
+
+            if (isFirst) {
+                for (let y = 7; y >= 5; y--) {
+                    for (let x = 7; x >= 4; x--) {
+                        iteration(x, y);
+                    }
+                }
+            } else {
+                for (let y = 2; y >= 0; y--) {
+                    for (let x = 3; x > 0; x--) {
+                        iteration(x, y);
+                    }
+                }
+            }
+
+            return {end, frozenSet}
+        }
+
         class Bot {
             _map = [];
 
@@ -34,9 +152,10 @@
              * @return {{ from: {x: number, y: number}, to: {x: number, y: number } }}
              */
             _searchMove(map) {
-                // bot here
-
-                return { from: { x: 2, y: 0 }, to: { x: 4, y: 0 } };
+                const { end, frozenSet } = calcEnd(map, this._isFirst);
+                console.log(end, frozenSet);
+                const moves = getMoves(map, frozenSet);
+                return getBestMove(moves, end);
             }
 
             _send(data) {
