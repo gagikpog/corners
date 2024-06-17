@@ -18,6 +18,19 @@
         const getDistance = ({ from, to }) => Math.sqrt(sqr(from.x - to.x) + sqr(from.y - to.y));
         const getDirection = (item, end) => getDistance({from: item.from, to: end }) > getDistance({ from: item.to, to: end }) ? 1 : -1;
 
+        function iterateEnd(isFirst, width, height, callback) {
+            const size = isFirst ? 7 : 0;
+            const count = Math.max(width, height) * 2;
+            for (let i = 0; i <= count; i++) {
+                for (let y = 0; y <= i; y++) {
+                    const x = i - y;
+                    if (x < width && y < height) {
+                        callback(Math.abs(size - x), Math.abs(size - y));
+                    }
+                }
+            }
+        }
+
         function canJump(figuresMap, from, to) {
             const middle = { x: (from.x + to.x) / 2, y: (from.y + to.y) / 2 };
             return !isPositionEmpty(figuresMap, middle) && isPositionEmpty(figuresMap, to) && isValidPos(to);
@@ -109,30 +122,17 @@
                 }
             }
 
-            if (isFirst) {
-                for (let y = 7; y >= 5; y--) {
-                    for (let x = 7; x >= 4; x--) {
-                        iteration(x, y);
-                    }
-                }
-            } else {
-                for (let y = 2; y >= 0; y--) {
-                    for (let x = 3; x > 0; x--) {
-                        iteration(x, y);
-                    }
-                }
-            }
-
+            iterateEnd(isFirst, 4, 3, iteration);
             return {end, frozenSet}
         }
 
         class Bot {
             _map = [];
 
-            init({ map, isFirst }) {
+            init({ map, isFirst, activePlayer }) {
                 this._map = map;
                 this._isFirst = isFirst;
-                if(this._isFirst) {
+                if(activePlayer) {
                     this.step({});
                 }
             }

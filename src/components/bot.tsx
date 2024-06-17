@@ -6,7 +6,7 @@ import { UrlInputDialog } from './urlInputDialog';
 export function Bot() {
     const frameRef = useRef<HTMLIFrameElement>(null);
     const isInitRef = useRef<boolean>(false);
-    const { activePlayer, numberOfMoves, figures, connected, botUrl, setBotUrl, showMessage, moveSelected } = useContext(Context);
+    const { activePlayer, firstPlayer, numberOfMoves, figures, connected, botUrl, setBotUrl, showMessage, moveSelected } = useContext(Context);
     const [inputOpened, setInputOpened] = useState(false);
     const frame = frameRef.current;
 
@@ -52,19 +52,20 @@ export function Bot() {
     }, [onKeyDown, botUrl]);
 
     useEffect(() => {
-        if (frame && !numberOfMoves && !isInitRef.current) {
+        if (frame && !isInitRef.current) {
             isInitRef.current = true;
             setTimeout(() => {
                 frame.contentWindow?.postMessage({
                     action: 'init',
                     payload: {
-                        isFirst: activePlayer,
-                        map: figures
+                        isFirst: firstPlayer,
+                        map: figures,
+                        activePlayer
                     }
                 }, '*');
             }, 50);
         }
-    }, [frame, activePlayer, figures, numberOfMoves, isInitRef]);
+    }, [frame, activePlayer, firstPlayer, figures, numberOfMoves, isInitRef]);
 
     const onLoad = useCallback(() => showMessage('Bot activated!'), [showMessage]);
 
