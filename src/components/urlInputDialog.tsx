@@ -9,7 +9,8 @@ interface IUrlInputDialog extends IProps {
 
 export function UrlInputDialog({onInput, onCancel}: IUrlInputDialog) {
 
-    const inputRef = useRef<HTMLInputElement>(null)
+    const inputRef = useRef<HTMLInputElement>(null);
+    const defaultValue = localStorage.getItem('cg-bot-text') || '';
 
     useEffect(() => {
         inputRef.current?.focus();
@@ -17,7 +18,9 @@ export function UrlInputDialog({onInput, onCancel}: IUrlInputDialog) {
 
     const onKeyDown = useCallback((event: KeyboardEvent) => {
         if (event.code === 'Enter' || event.code === 'NumpadEnter') {
-            onInput?.(inputRef.current?.value || '');
+            const value = inputRef.current?.value || ''
+            onInput?.(value);
+            localStorage.setItem('cg-bot-text', value);
         } else if (event.code === 'Escape') {
             onCancel?.();
         }
@@ -26,7 +29,7 @@ export function UrlInputDialog({onInput, onCancel}: IUrlInputDialog) {
     return (
         <div className="cg-url-dialog-overlay" >
             <div id='cg-url-dialog' className='cg-url-dialog'>
-                <input type="text" ref={inputRef} className='cg-url-dialog-input' onKeyDown={onKeyDown} />
+                <input type="text" defaultValue={defaultValue} ref={inputRef} className='cg-url-dialog-input' onKeyDown={onKeyDown} />
             </div>
         </div>
     );
