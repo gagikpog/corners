@@ -16,12 +16,12 @@ export function Settings() {
         const [w, h] = target.value.split('x');
         setSettings({
             ...settings,
-            itemsHight: Number(h),
+            itemsHeight: Number(h),
             itemsWidth: Number(w)
         });
     }, [settings,setSettings]);
 
-    const size = `${settings.itemsWidth}x${settings.itemsHight}`;
+    const size = `${settings.itemsWidth}x${settings.itemsHeight}`;
 
     const outsideClick = useCallback((event: MouseEvent) => {
         const target = event.target as HTMLElement;

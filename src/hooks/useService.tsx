@@ -6,7 +6,7 @@ import { getPeerIdFromUrl } from '../helpers/url';
 export function useService() {
     const [peerId, setPeerId] = useState<string>('');
     const [connected, setConnected] = useState<boolean>(false);
-    const [settings, updateSettings] = useState<ISettings>({ itemsWidth: 4, itemsHight: 3 });
+    const [settings, updateSettings] = useState<ISettings>({ itemsWidth: 4, itemsHeight: 3 });
 
     const service = useRef(new Service());
 

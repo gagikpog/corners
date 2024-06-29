@@ -77,7 +77,7 @@ export interface ILastMove {
 
 export interface ISettings {
     itemsWidth: number;
-    itemsHight: number;
+    itemsHeight: number;
 }
 
 export interface IFrameMessage {

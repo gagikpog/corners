@@ -14,26 +14,26 @@ export function checkGameEnd({ figures, firstPlayer, settings }: ICheckGameEndOp
 
     figures.forEach((figure) => {
         if (firstPlayer) {
-            if (figure.owner && figure.x >= GAME_SIZE - settings.itemsWidth && figure.y >= GAME_SIZE - settings.itemsHight) {
+            if (figure.owner && figure.x >= GAME_SIZE - settings.itemsWidth && figure.y >= GAME_SIZE - settings.itemsHeight) {
                 playerCount++
             }
-            if (!figure.owner && figure.x < settings.itemsWidth && figure.y < settings.itemsHight) {
+            if (!figure.owner && figure.x < settings.itemsWidth && figure.y < settings.itemsHeight) {
                 opponentCount++
             }
         } else {
-            if (figure.owner && figure.x < settings.itemsWidth && figure.y < settings.itemsHight) {
+            if (figure.owner && figure.x < settings.itemsWidth && figure.y < settings.itemsHeight) {
                 playerCount++
             }
-            if (!figure.owner && figure.x >= GAME_SIZE - settings.itemsWidth && figure.y >= GAME_SIZE - settings.itemsHight) {
+            if (!figure.owner && figure.x >= GAME_SIZE - settings.itemsWidth && figure.y >= GAME_SIZE - settings.itemsHeight) {
                 opponentCount++
             }
         }
     });
 
-    if (opponentCount === settings.itemsWidth * settings.itemsHight) {
+    if (opponentCount === settings.itemsWidth * settings.itemsHeight) {
         res = 'lose';
     }
-    if (playerCount === settings.itemsWidth * settings.itemsHight) {
+    if (playerCount === settings.itemsWidth * settings.itemsHeight) {
         res += 'win';
     }
 

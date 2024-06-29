@@ -104,7 +104,7 @@
             return moves.reduce((prev, item) => prev.rating > item.rating ? prev : item);
         }
 
-        function calcEnd(map, isFirst) {
+        function calcEnd(map, isFirst, width, height) {
             const itemsMap = toMap(map);
             const frozenSet = new Set();
             let end;
@@ -122,16 +122,20 @@
                 }
             }
 
-            iterateEnd(isFirst, 4, 3, iteration);
+            iterateEnd(isFirst, width, height, iteration);
             return {end, frozenSet}
         }
 
         class Bot {
             _map = [];
+            _width = 4;
+            _height = 3;
 
-            init({ map, isFirst, activePlayer }) {
+            init({ map, isFirst, activePlayer, width, height }) {
                 this._map = map;
                 this._isFirst = isFirst;
+                this._width = width;
+                this._height = height;
                 if(activePlayer) {
                     this.step({});
                 }
@@ -152,7 +156,7 @@
              * @return {{ from: {x: number, y: number}, to: {x: number, y: number } }}
              */
             _searchMove(map) {
-                const { end, frozenSet } = calcEnd(map, this._isFirst);
+                const { end, frozenSet } = calcEnd(map, this._isFirst, this._width, this._height);
                 console.log(end, frozenSet);
                 const moves = getMoves(map, frozenSet);
                 return getBestMove(moves, end);
