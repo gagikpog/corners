@@ -11,12 +11,20 @@
         const GAME_SIZE = 8;
         const checkedPositions = new Set();
 
-        const getKey = (pos) => `x: ${pos.x},y:${pos.y}`;
+        const getKey = (pos) => `x:${pos.x},y:${pos.y}`;
         const isValidPos = (pos) => pos.x >= 0 && pos.x < GAME_SIZE && pos.y >= 0 && pos.y < GAME_SIZE;
         const isPositionEmpty = (figuresMap, pos) => !figuresMap.get(getKey(pos));
         const sqr = (v) => v*v;
         const getDistance = ({ from, to }) => Math.sqrt(sqr(from.x - to.x) + sqr(from.y - to.y));
         const getDirection = (item, end) => getDistance({from: item.from, to: end }) > getDistance({ from: item.to, to: end }) ? 1 : -1;
+
+        function swap(map, {from, to}) {
+            const current = map.find((item) => item.x === from.x && item.y === from.y);
+            if (current) {
+                current.x = to.x;
+                current.y = to.y;
+            }
+        }
 
         function iterateEnd(isFirst, width, height, callback) {
             const size = isFirst ? 7 : 0;
@@ -88,20 +96,35 @@
             return map.filter((item) => item.owner && !frozenSet.has(getKey(item))).reduce((result, item) => {
                 const from = { x: item.x, y: item.y };
                 getMovesForItem(map, from).forEach((to) => {
-                    result.push({from, to})
+                    result.push({from, to, rating: 0});
                 });
                 return result;
             }, []);
         }
 
-        function getBestMove(moves, end) {
+        function calcRating(moves, end) {
             moves.forEach((item) => {
                 const distanceFrom = end ? getDistance({from: item.from, to: end}) : 0;
                 const distanceTo = end ? getDistance({from: item.to, to: end}) : 0;
-                item.rating = (distanceFrom * 1.1 - distanceTo);
+                const distancePriority = distanceFrom > 7 ? 1.1 : 0.9;
+                item.rating += (distanceFrom * distancePriority - distanceTo);
             });
+        }
 
-            return moves.reduce((prev, item) => prev.rating > item.rating ? prev : item);
+        function filterBadMoves(moves) {
+            return moves.filter(({rating}) => rating > -2);
+        }
+
+        function getBestMove(moves, end) {
+            return moves.reduce((prev, item) => {
+                if (prev.rating > item.rating) {
+                    return prev;
+                }
+                if (prev.rating === item.rating) {
+                    return Math.random() < 0.5 ? item : prev;
+                }
+                return item;
+            });
         }
 
         function calcEnd(map, isFirst, width, height) {
@@ -123,7 +146,7 @@
             }
 
             iterateEnd(isFirst, width, height, iteration);
-            return {end, frozenSet}
+            return {end, frozenSet};
         }
 
         class Bot {
@@ -143,11 +166,11 @@
 
             step({ from, to }) {
                 if (from && to) {
-                    this._move({ from, to });
+                    swap(this._map, { from, to });
                 }
 
                 const move = this._searchMove(this._map);
-                this._move(move);
+                swap(this._map, move);
                 this._send({ action: 'step', payload: move });
             }
 
@@ -157,21 +180,34 @@
              */
             _searchMove(map) {
                 const { end, frozenSet } = calcEnd(map, this._isFirst, this._width, this._height);
-                console.log(end, frozenSet);
-                const moves = getMoves(map, frozenSet);
+                const iterations = 3;
+                let moves = getMoves(map, frozenSet);
+                calcRating(moves, end);
+                moves = filterBadMoves(moves);
+
+                const findDeep = (map, moves, iteration) => {
+                    if (iteration > 0) {
+                        moves.forEach((move) => {
+                            swap(map, move);
+                            let movesNext = getMoves(map, frozenSet);
+                            calcRating(movesNext, end);
+                            movesNext = filterBadMoves(movesNext);
+                            findDeep(map, movesNext, iteration - 1);
+                            const bestMove = getBestMove(movesNext, end);
+                            move.rating += bestMove.rating / (iterations - iteration + 2);
+                            move.nextBest = bestMove;
+                            swap(map, {from: move.to, to: move.from});
+                        });
+                    }
+                }
+
+                findDeep(map, moves, iterations);
+                console.log(end, frozenSet, moves);
                 return getBestMove(moves, end);
             }
 
             _send(data) {
                 window.parent.postMessage(data, '*');
-            }
-
-            _move({ from, to }) {
-                const current = this._map.find((item) => item.x === from.x && item.y === from.y);
-                if (current) {
-                    current.x = to.x;
-                    current.y = to.y;
-                }
             }
         }
 
