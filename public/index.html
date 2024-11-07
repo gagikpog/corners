@@ -1,18 +1,691 @@
 <!DOCTYPE html>
 <html lang="ru" class="cg-html">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="theme-color" content="#000000" />
-        <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="apple-touch-icon" sizes="256x256" href="/favicon.png">
-        <link rel="icon" type="image/png" sizes="256x256" href="/favicon.png">
-        <link rel="mask-icon" href="/favicon.svg">
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-        <title>Corners game</title>
-    </head>
-    <body class="cg-body">
-        <noscript>You need to enable JavaScript to run this app.</noscript>
-        <div id="cg-root"></div>
-    </body>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000" />
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" sizes="256x256" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="256x256" href="/favicon.png">
+    <link rel="mask-icon" href="/favicon.svg">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <title>Игра «Уголки» онлайн с другом..</title>
+    <meta name="description"
+        content="Играйте в увлекательную игру «Уголки» онлайн без необходимости регистрации! Пригласите друга присоединиться к вам — просто отправьте ему ссылку, и вы сможете наслаждаться игрой вместе в любое время и в любом месте. «Уголки» — это отличная возможность проверить свои стратегические навыки и развлечься в компании. Присоединяйтесь к нам и погрузитесь в мир захватывающих сражений и дружеского соперничества!">
+</head>
+
+<body class="cg-body">
+    <div id="cg-root">
+        <header class="cg-header">
+            <div class="cg-logo">Уголки</div>
+            <div class="cg-status-bar">
+                <div>не подключен</div>
+            </div>
+            <div class="cg-toolbar"><svg class="cg-button" viewBox="0 0 308.667 308.667" width="24px" height="24px">
+                    <title>QR код</title>
+                    <rect x="38.073" y="38.073" width="47.592" height="47.592"></rect>
+                    <rect x="38.073" y="223.002" width="47.592" height="47.592"></rect>
+                    <path
+                        d="M0,163.852v21.076v13.598v110.141h123.739v-66.629h28.555v30.595v2.04v32.634h34.674v-28.555 h27.195v28.555h34.674v-32.634h25.156v32.634h34.674v-34.674h-32.634v-32.634h-34.674v32.634H218.58v-67.308h-31.612V176.77 h32.634v32.634h34.674v-21.756h19.717v14.278v18.357v16.317h34.674v-16.317v-18.357v-16.317h-21.756v-30.595h21.756v-31.275 v-3.399V0H184.928v0.228h-32.634v37.845h-28.555V0H0v109.461v14.278v20.396h21.756v19.717H0z M101.982,286.911H21.756v-80.226 h80.226V286.911z M154.333,209.404h29.578v30.595h-29.578V209.404z M154.333,144.135h27.533v30.595h-27.533V144.135z M273.993,152.974h-18.7v-10.878h-68.326v-18.357h87.025V152.974z M206.684,21.756h80.226v80.226h-80.226V21.756z M184.928,109.461h-30.595v-67.76h30.595V109.461z M152.294,142.096h-28.468v-30.595h28.468V142.096z M21.756,21.756h80.226 v80.226H21.756V21.756z M89.152,123.739v20.396h30.508v32.634h32.634v30.595h-28.555v-22.436H34.674v-8.159h19.717h2.04h32.634 v-34.674H56.43h-2.04H34.674v-18.357H89.152z">
+                    </path>
+                    <rect x="223.002" y="38.073" width="47.592" height="47.592"></rect>
+                </svg><svg class="cg-button" width="24px" height="24px" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <title>Вставить ссылку</title>
+                    <path fill-rule="evenodd"
+                        d="M12 0C11.2347 0 10.6293 0.125708 10.1567 0.359214C9.9845 0.44429 9.82065 0.544674 9.68861 0.62717L9.59036 0.688808C9.49144 0.751003 9.4082 0.803334 9.32081 0.853848C9.09464 0.984584 9.00895 0.998492 9.00053 0.999859C8.99983 0.999973 9.00019 0.999859 9.00053 0.999859C7.89596 0.999859 7 1.89543 7 3H6C4.34315 3 3 4.34315 3 6V20C3 21.6569 4.34315 23 6 23H18C19.6569 23 21 21.6569 21 20V6C21 4.34315 19.6569 3 18 3H17C17 1.89543 16.1046 1 15 1C15.0003 1 15.0007 1.00011 15 1C14.9916 0.998633 14.9054 0.984584 14.6792 0.853848C14.5918 0.80333 14.5086 0.751004 14.4096 0.688804L14.3114 0.62717C14.1793 0.544674 14.0155 0.44429 13.8433 0.359214C13.3707 0.125708 12.7653 0 12 0ZM16.7324 5C16.3866 5.5978 15.7403 6 15 6H9C8.25972 6 7.61337 5.5978 7.26756 5H6C5.44772 5 5 5.44772 5 6V20C5 20.5523 5.44772 21 6 21H18C18.5523 21 19 20.5523 19 20V6C19 5.44772 18.5523 5 18 5H16.7324ZM11.0426 2.15229C11.1626 2.09301 11.4425 2 12 2C12.5575 2 12.8374 2.09301 12.9574 2.15229C13.0328 2.18953 13.1236 2.24334 13.2516 2.32333L13.3261 2.37008C13.43 2.43542 13.5553 2.51428 13.6783 2.58539C13.9712 2.75469 14.4433 3 15 3V4H9V3C9.55666 3 10.0288 2.75469 10.3217 2.58539C10.4447 2.51428 10.57 2.43543 10.6739 2.37008L10.7484 2.32333C10.8764 2.24334 10.9672 2.18953 11.0426 2.15229Z"
+                        fill="#000"></path>
+                </svg><svg class="cg-button" width="24px" height="24px" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <title>Скопировать ссылку</title>
+                    <path
+                        d="M15.197 3.35462C16.8703 1.67483 19.4476 1.53865 20.9536 3.05046C22.4596 4.56228 22.3239 7.14956 20.6506 8.82935L18.2268 11.2626M10.0464 14C8.54044 12.4882 8.67609 9.90087 10.3494 8.22108L12.5 6.06212"
+                        stroke="#000" stroke-width="1.5" stroke-linecap="round"></path>
+                    <path
+                        d="M13.9536 10C15.4596 11.5118 15.3239 14.0991 13.6506 15.7789L11.2268 18.2121L8.80299 20.6454C7.12969 22.3252 4.55237 22.4613 3.0464 20.9495C1.54043 19.4377 1.67609 16.8504 3.34939 15.1706L5.77323 12.7373"
+                        stroke="#000" stroke-width="1.5" stroke-linecap="round"></path>
+                </svg></div>
+        </header>
+        <main class="cg-main">
+            <div class="cg-settings">
+                <div class="cg-settings-panel ">
+                    <div class="cg-settings-panel-content">
+                        <div>Размер</div><select disabled="">
+                            <option value="3x3">3x3</option>
+                            <option value="4x3">4x3</option>
+                            <option value="3x4">3x4</option>
+                            <option value="4x4">4x4</option>
+                        </select>
+                        <div class="cg-settings-col-2"><a href="/">Повернуть карту</a></div>
+                    </div>
+                </div><svg class="cg-burger " width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <title>Открыть настройки</title>
+                    <path d="M4 18L20 18" stroke="#000" stroke-width="2" stroke-linecap="round"></path>
+                    <path d="M4 12L20 12" stroke="#000" stroke-width="2" stroke-linecap="round"></path>
+                    <path d="M4 6L20 6" stroke="#000" stroke-width="2" stroke-linecap="round"></path>
+                </svg>
+            </div>
+            <div class="cg-game cg-board-rotated-- cg-game-board" style="--game-size: 8;">
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item cg-hide"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item cg-hide"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item cg-hide"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item cg-hide"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item cg-hide"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item cg-hide"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item cg-hide"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item"></div>
+                <div class="cg-item cg-hide"></div>
+                <div class="cg-figure" id="figure-169" style="--left: 0; --top: 0;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r1h:">
+                                <stop offset="0" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="1" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r1h:" id=":r1g:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r1g:&quot;); stroke: rgb(102, 102, 102); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-170" style="--left: 1; --top: 0;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r1j:">
+                                <stop offset="0" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="1" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r1j:" id=":r1i:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r1i:&quot;); stroke: rgb(102, 102, 102); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-171" style="--left: 2; --top: 0;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r1l:">
+                                <stop offset="0" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="1" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r1l:" id=":r1k:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r1k:&quot;); stroke: rgb(102, 102, 102); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-172" style="--left: 3; --top: 0;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r1n:">
+                                <stop offset="0" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="1" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r1n:" id=":r1m:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r1m:&quot;); stroke: rgb(102, 102, 102); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-173" style="--left: 0; --top: 1;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r1p:">
+                                <stop offset="0" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="1" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r1p:" id=":r1o:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r1o:&quot;); stroke: rgb(102, 102, 102); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-174" style="--left: 1; --top: 1;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r1r:">
+                                <stop offset="0" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="1" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r1r:" id=":r1q:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r1q:&quot;); stroke: rgb(102, 102, 102); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-175" style="--left: 2; --top: 1;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r1t:">
+                                <stop offset="0" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="1" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r1t:" id=":r1s:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r1s:&quot;); stroke: rgb(102, 102, 102); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-176" style="--left: 3; --top: 1;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r1v:">
+                                <stop offset="0" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="1" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r1v:" id=":r1u:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r1u:&quot;); stroke: rgb(102, 102, 102); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-177" style="--left: 0; --top: 2;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r21:">
+                                <stop offset="0" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="1" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r21:" id=":r20:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r20:&quot;); stroke: rgb(102, 102, 102); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-178" style="--left: 1; --top: 2;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r23:">
+                                <stop offset="0" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="1" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r23:" id=":r22:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r22:&quot;); stroke: rgb(102, 102, 102); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-179" style="--left: 2; --top: 2;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r25:">
+                                <stop offset="0" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="1" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r25:" id=":r24:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r24:&quot;); stroke: rgb(102, 102, 102); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-180" style="--left: 3; --top: 2;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r27:">
+                                <stop offset="0" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(51, 51, 51); stop-opacity: 1;"></stop>
+                                <stop offset="1" style="stop-color: rgb(0, 0, 0); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r27:" id=":r26:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r26:&quot;); stroke: rgb(102, 102, 102); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-181" style="--left: 4; --top: 5;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r29:">
+                                <stop offset="0" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="1" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r29:" id=":r28:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r28:&quot;); stroke: rgb(187, 187, 187); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-182" style="--left: 5; --top: 5;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r2b:">
+                                <stop offset="0" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="1" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r2b:" id=":r2a:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r2a:&quot;); stroke: rgb(187, 187, 187); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-183" style="--left: 6; --top: 5;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r2d:">
+                                <stop offset="0" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="1" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r2d:" id=":r2c:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r2c:&quot;); stroke: rgb(187, 187, 187); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-184" style="--left: 7; --top: 5;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r2f:">
+                                <stop offset="0" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="1" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r2f:" id=":r2e:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r2e:&quot;); stroke: rgb(187, 187, 187); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-185" style="--left: 4; --top: 6;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r2h:">
+                                <stop offset="0" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="1" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r2h:" id=":r2g:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r2g:&quot;); stroke: rgb(187, 187, 187); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-186" style="--left: 5; --top: 6;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r2j:">
+                                <stop offset="0" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="1" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r2j:" id=":r2i:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r2i:&quot;); stroke: rgb(187, 187, 187); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-187" style="--left: 6; --top: 6;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r2l:">
+                                <stop offset="0" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="1" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r2l:" id=":r2k:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r2k:&quot;); stroke: rgb(187, 187, 187); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-188" style="--left: 7; --top: 6;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r2n:">
+                                <stop offset="0" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="1" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r2n:" id=":r2m:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r2m:&quot;); stroke: rgb(187, 187, 187); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-189" style="--left: 4; --top: 7;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r2p:">
+                                <stop offset="0" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="1" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r2p:" id=":r2o:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r2o:&quot;); stroke: rgb(187, 187, 187); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-190" style="--left: 5; --top: 7;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r2r:">
+                                <stop offset="0" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="1" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r2r:" id=":r2q:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r2q:&quot;); stroke: rgb(187, 187, 187); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-191" style="--left: 6; --top: 7;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r2t:">
+                                <stop offset="0" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="1" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r2t:" id=":r2s:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r2s:&quot;); stroke: rgb(187, 187, 187); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+                <div class="cg-figure" id="figure-192" style="--left: 7; --top: 7;"><svg class="cg-figure-svg"
+                        viewBox="0 0 87.213272 87.213272">
+                        <defs>
+                            <linearGradient id=":r2v:">
+                                <stop offset="0" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                                <stop offset="0.29166666" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.4074074" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.5162037" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.76157409" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="0.89583325" style="stop-color: rgb(204, 204, 204); stop-opacity: 1;">
+                                </stop>
+                                <stop offset="1" style="stop-color: rgb(255, 255, 255); stop-opacity: 1;"></stop>
+                            </linearGradient>
+                            <radialGradient href="#:r2v:" id=":r2u:" cx="50" cy="50" fx="50" fy="50" r="42.5"
+                                gradientUnits="userSpaceOnUse" gradientTransform="translate(-6.393364,-6.393364)">
+                            </radialGradient>
+                        </defs>
+                        <circle cx="43" cy="43" r="42"
+                            style="display: inline; fill: url(&quot;#:r2u:&quot;); stroke: rgb(187, 187, 187); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 1;">
+                        </circle>
+                    </svg></div>
+            </div>
+            <div class="cg-messages"></div>
+            <div class="cg-game-status cg-hidden">игра</div>
+            <div></div>
+        </main>
+    </div>
+</body>
+
 </html>

@@ -6,21 +6,24 @@ import { Provider } from './context';
 import { Settings } from './components/settings';
 import { Game } from './components/game';
 import { Bot } from './components/bot';
+import { LangContextProvider } from './LangContext';
 
 export default function App() {
 
     return (
-        <Provider>
-            <>
-                <Header />
-                <main className='cg-main'>
-                    <Settings/>
-                    <Game />
-                    <Messages />
-                    <Display />
-                    <Bot />
-                </main>
-            </>
-        </Provider>
+        <LangContextProvider>
+            <Provider>
+                <>
+                    <Header />
+                    <main className='cg-main'>
+                        <Settings/>
+                        <Game />
+                        <Messages />
+                        <Display />
+                        <Bot />
+                    </main>
+                </>
+            </Provider>
+        </LangContextProvider>
     );
 }

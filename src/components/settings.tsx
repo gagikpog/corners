@@ -2,6 +2,7 @@ import { ChangeEvent, MouseEvent as ReactMouseEvent, useCallback, useContext, us
 import { Context } from '../context';
 import { Burger } from './icon/burger';
 import { BoardRotate } from '../types';
+import { useTranslation } from '../hooks/useTranslation';
 
 export function Settings() {
     const [opened, setOpened] = useState(false);
@@ -38,13 +39,15 @@ export function Settings() {
     const rotateBoard = useCallback((event: ReactMouseEvent) => {
         event.preventDefault();
         setBoardRotate((value: BoardRotate) => value === BoardRotate.Rotated ? BoardRotate.Default: BoardRotate.Rotated);
-    }, [setBoardRotate])
+    }, [setBoardRotate]);
+
+    const { tr } = useTranslation();
 
     return (
         <div className="cg-settings">
             <div className={`cg-settings-panel ${ opened ? 'cg-settings-panel-opened' : ''}`}>
                 <div className="cg-settings-panel-content">
-                    <div>Size</div>
+                    <div>{tr('settings.size')}</div>
                     <select onChange={changeSize} value={size} disabled={!!numberOfMoves || !connected}>
                         <option value="3x3">3x3</option>
                         <option value="4x3">4x3</option>
@@ -52,7 +55,7 @@ export function Settings() {
                         <option value="4x4">4x4</option>
                     </select>
                     <div className='cg-settings-col-2'>
-                        <a onClick={rotateBoard} href="/" >Rotate desk</a>
+                        <a onClick={rotateBoard} href="/" >{tr('settings.rotate-desk')}</a>
                     </div>
                 </div>
             </div>

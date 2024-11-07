@@ -1,0 +1,57 @@
+export enum Langs {
+    ru = 'ru',
+    en = 'en'
+}
+
+export const LangMap = {
+    en: {
+        'game.title': 'Corners',
+        'state.not-connected': 'not connected',
+        'state.opponent-move': `opponent's move`,
+        'state.your-move': 'your move',
+        'status.game': 'game',
+        'status.lose': 'lose',
+        'status.win': 'win',
+        'status.draw': 'draw',
+        'move-count-title': 'move',
+        'icon-qr': 'QR code',
+        'icon-paste': 'Paste URL',
+        'icon-copy': 'Copy URL',
+        'icon.toggle': 'Toggle settings',
+        'settings.size': 'Size',
+        'settings.rotate-desk': 'Rotate desk',
+        'message.opening': 'Opening connection, wait for the opponent!',
+        'message.connected': 'Connecting to an opponent!',
+        'message.bot-activated': 'Bot activated!',
+        'message.copy-success': 'Link copied successfully!',
+        'message.copy-error': 'Error copying link!',
+        'message.paste-success': 'Link inserted successfully!',
+        'message.paste-waring': `Can't connect, wrong URL!`,
+        'message.paste-error': 'Error when inserting link!',
+    },
+    ru: {
+        'game.title': 'Уголки',
+        'state.not-connected': 'не подключен',
+        'state.opponent-move': `ход соперника`,
+        'state.your-move': 'ваш ход',
+        'status.game': 'игра',
+        'status.lose': 'проигрыш',
+        'status.win': 'победа',
+        'status.draw': 'ничья',
+        'move-count-title': 'ход',
+        'icon-qr': 'QR код',
+        'icon-paste': 'Вставить ссылку',
+        'icon-copy': 'Скопировать ссылку',
+        'icon.toggle': 'Открыть настройки',
+        'settings.size': 'Размер',
+        'settings.rotate-desk': 'Повернуть карту',
+        'message.opening': 'Открыто соединение, ждем соперника!',
+        'message.connected': 'Не удалось подключиться к сопернику!',
+        'message.bot-activated': 'Bot activated!',
+        'message.copy-success': 'Ссылка успешно скопирована!',
+        'message.copy-error': 'Ошибка при копировании ссылки!',
+        'message.paste-success': 'Ссылка успешно вставлена!',
+        'message.paste-waring': 'Невозможно подключится, навалидный URL!',
+        'message.paste-error': 'Ошибка при вставки ссылки!'
+    }
+};

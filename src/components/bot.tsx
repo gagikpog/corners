@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Context } from '../context';
 import { IFrameMessage, ILastMove } from '../types';
 import { UrlInputDialog } from './urlInputDialog';
+import { useTranslation } from '../hooks/useTranslation';
 
 export function Bot() {
     const frameRef = useRef<HTMLIFrameElement>(null);
@@ -9,6 +10,7 @@ export function Bot() {
     const { activePlayer, firstPlayer, figures, connected, botUrl, settings, setBotUrl, showMessage, moveSelected } = useContext(Context);
     const [inputOpened, setInputOpened] = useState(false);
     const frame = frameRef.current;
+    const { tr } = useTranslation();
 
     const onMessage = useCallback((event: MessageEvent<IFrameMessage>) => {
         switch (event.data.action) {
@@ -69,7 +71,7 @@ export function Bot() {
         }
     }, [frame, activePlayer, firstPlayer, figures, isInitRef, settings]);
 
-    const onLoad = useCallback(() => showMessage('Bot activated!'), [showMessage]);
+    const onLoad = useCallback(() => showMessage(tr('message.bot-activated')), [showMessage, tr]);
 
     return (
         <div>

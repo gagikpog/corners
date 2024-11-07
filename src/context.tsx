@@ -10,6 +10,7 @@ import { checkGameEnd } from './helpers/checkGameEnd';
 import { EMPTY_POSITION } from './constants';
 import calculateMoves from './helpers/calculateMoves';
 import { sendBot } from './helpers/sendBot';
+import { useTranslation } from './hooks/useTranslation';
 
 interface IContextData {
     figures: IFigure[];
@@ -55,6 +56,7 @@ export function Provider({ children }: IProps) {
     const [boardRotate, setBoardRotate] = useState<BoardRotate>(BoardRotate.Unset);
     const [qrVisible, setQrVisible] = useState<boolean>(false);
     const [botUrl, setBotUrl] = useState<string>('');
+    const { tr } = useTranslation();
 
     const newGame = useCallback((needSync: boolean = false) => {
         setFirstPlayer((value) => {
@@ -165,9 +167,9 @@ export function Provider({ children }: IProps) {
             const isFirst = color === Color.Black;
             setActivePlayer(isFirst);
             setFirstPlayer(isFirst);
-            showMessage('Connecting to an opponent!');
+            showMessage(tr('message.connected'));
         });
-    }, [service, showMessage]);
+    }, [service, showMessage, tr]);
 
     useEffect(() => {
         setFigures(generateFigures(firstPlayer ? Color.Black : Color.White, settings));
@@ -177,7 +179,7 @@ export function Provider({ children }: IProps) {
         const subscribers = [
             service.subscribe(ServiceEvents.Open, (peerId: string) => {
                 if (peerId) {
-                    showMessage('Opening connection, wait for the opponent!');
+                    showMessage(tr('message.opening'));
                 }
             }),
             service.subscribe(ServiceEvents.Error, (message: string) => {
@@ -185,7 +187,7 @@ export function Provider({ children }: IProps) {
             })
         ];
         return () => subscribers.forEach((func) => func());
-    }, [service, showMessage]);
+    }, [service, showMessage, tr]);
 
     const value = useMemo<IContextData>((): IContextData => {
         return {

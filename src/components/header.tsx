@@ -7,32 +7,34 @@ import { Copy } from './icon/copy';
 import { Paste } from './icon/paste';
 import { QrIcon } from './icon/qr';
 import { Reload } from './icon/reload';
+import { useTranslation } from '../hooks/useTranslation';
 
 export function Header() {
 
     const { peerId, activePlayer, connected, numberOfMoves, gameStatus, connectTo, showMessage, setQrVisible, newGame } = useContext(Context);
+    const { tr } = useTranslation();
 
     const copyHandler = useCallback(() => {
         copy(generateUrl(peerId)).then(() => {
-            showMessage(`Link copied successfully!`);
+            showMessage(tr('message.copy-success'));
         }).catch(() => {
-            showMessage(`Error copying link!`, MessageType.Error);
+            showMessage(tr('message.copy-error'), MessageType.Error);
         });
-    }, [peerId, showMessage]);
+    }, [peerId, showMessage, tr]);
 
     const pasteHandler = useCallback(() => {
         paste().then((text: string) => {
             const id = getPeerId(text);
             if (id) {
                 connectTo(id);
-                showMessage(`Link inserted successfully!`);
+                showMessage(tr('message.paste-success'));
             } else {
-                showMessage(`Can't connect, wrong URL!`, MessageType.Warn);
+                showMessage(tr('message.paste-waring'), MessageType.Warn);
             }
         }).catch(() => {
-            showMessage(`Error when inserting link!`, MessageType.Error);
+            showMessage(tr('message.paste-error'), MessageType.Error);
         });
-    }, [connectTo, showMessage]);
+    }, [connectTo, showMessage, tr]);
 
     const toggleQr = useCallback(() => {
         setQrVisible((val) => !val);
@@ -44,16 +46,16 @@ export function Header() {
 
     return (
         <header className='cg-header'>
-            <div className="cg-logo">Corners</div>
+            <div className="cg-logo">{tr('game.title')}</div>
                 <div className='cg-status-bar'>
                     <div>
-                        { connected ? activePlayer ? 'your move' : `opponent's move` : 'not connected' }
+                        { connected ? activePlayer ? tr('state.your-move') : tr('state.opponent-move') : tr('state.not-connected') }
                     </div>
                     {
                         numberOfMoves ? (
                             <>
                                 <div>|</div>
-                                <div> move {numberOfMoves} </div>
+                                <div> {tr('move-count-title')} {numberOfMoves} </div>
                             </>
                         ) : null
                     }
