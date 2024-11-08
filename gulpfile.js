@@ -5,11 +5,11 @@ gulp.task('default', function () {
   return gulp
     .src('./build/index.html')
     .pipe(replace('lang="ru"', 'lang="en"'))
-    .pipe(replace('Игра «Уголки» онлайн с другом.', 'Corners game play online with friend'))
+    .pipe(replace('«Уголки» | Играй с друзьями онлайн!', '"Corners" | Play with friends online!'))
     .pipe(
       replace(
-        'Играйте в увлекательную игру «Уголки» онлайн без необходимости регистрации! Пригласите друга присоединиться к вам — просто отправьте ему ссылку, и вы сможете наслаждаться игрой вместе в любое время и в любом месте. «Уголки» — это отличная возможность проверить свои стратегические навыки и развлечься в компании. Присоединяйтесь к нам и погрузитесь в мир захватывающих сражений и дружеского соперничества!',
-        'Play the exciting game "Corners" online without the need for registration! Invite a friend to join you—just send them the link, and you can enjoy the game together anytime and anywhere. "Corners" is a great opportunity to test your strategic skills and have fun with company. Join us and immerse yourself in a world of thrilling battles and friendly competition!'
+        'Играйте в увлекательную онлайн-игру «Уголки» без регистрации! Эта захватывающая мультиплеерная игра позволяет вам пригласить друга и наслаждаться игровым процессом вместе в любое время и в любом месте. Игра с друзьями — это отличный способ проверить свои стратегические навыки и развлечься в компании.',
+        'Play the exciting online game "Corners" without registration! This exciting multiplayer game allows you to invite a friend and enjoy the gameplay together anytime and anywhere. Playing with friends is a great way to test your strategic skills and have fun in a company.'
       )
     )
     .pipe(replace('Уголки', 'Corners'))
