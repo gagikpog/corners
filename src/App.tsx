@@ -7,6 +7,7 @@ import { Settings } from './components/settings';
 import { Game } from './components/game';
 import { Bot } from './components/bot';
 import { LangContextProvider } from './LangContext';
+import { SvgData } from './components/svgData';
 
 export default function App() {
 
@@ -21,6 +22,7 @@ export default function App() {
                         <Messages />
                         <Display />
                         <Bot />
+                        <SvgData />
                     </main>
                 </>
             </Provider>

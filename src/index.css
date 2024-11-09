@@ -109,6 +109,12 @@
   transition: left 0.5s, top 0.5s, width 0.5s, height 0.5s;
 }
 
+.cg-figure-svg-path {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}
+
 .cg-figure-svg {
   width: var(--figure-size);
   height: var(--figure-size);
