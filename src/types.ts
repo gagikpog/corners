@@ -20,7 +20,7 @@ export enum ResponseActions {
 export enum MessageType {
     Error = 'error',
     Info = 'info',
-    Warn =  'warn'
+    Warn =  'warning'
 }
 
 export enum GameStatus {

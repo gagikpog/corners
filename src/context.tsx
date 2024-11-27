@@ -11,6 +11,7 @@ import { EMPTY_POSITION } from './constants';
 import calculateMoves from './helpers/calculateMoves';
 import { sendBot } from './helpers/sendBot';
 import { useTranslation } from './hooks/useTranslation';
+import { logging } from './helpers/log';
 
 interface IContextData {
     figures: IFigure[];
@@ -80,6 +81,9 @@ export function Provider({ children }: IProps) {
             text: message,
             type
         };
+        if (type === MessageType.Error) {
+            logging(message, type);
+        }
         setMessages((prev) => [...prev, data]);
         setTimeout(() => {
             setMessages((prev) => prev.filter((currentMessage) => currentMessage.id !== data.id));
