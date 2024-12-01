@@ -26,7 +26,7 @@ export class Service {
     };
 
     constructor() {
-        this._peer = new Peer('', {});
+        this._peer = new Peer('', { debug: 1 });
 
         this._peer.on('open', (peerId: string) => {
             this._pickId = peerId;

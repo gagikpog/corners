@@ -1,5 +1,7 @@
 import { MessageType } from '../types';
 
+const originalConsoleError = console.error;
+
 export function logging(message: string, type: MessageType): void {
     fetch('https://gagikpog-api.ru/logging/add/', {
         method: 'POST',
@@ -10,10 +12,15 @@ export function logging(message: string, type: MessageType): void {
     }).then((res) => {
         return res.json();
     }).catch(() => {
-        console.error('log save error');
+        originalConsoleError('log save error');
     });
 }
 
 window.onerror = function(error, url, line){
     logging(String(error), MessageType.Error);
+};
+
+console.error = function(...args) {
+    originalConsoleError.apply(this, args);
+    logging(String(args.map(String).join('; ')), MessageType.Error);
 };

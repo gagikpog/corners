@@ -187,7 +187,9 @@ export function Provider({ children }: IProps) {
                 }
             }),
             service.subscribe(ServiceEvents.Error, (message: string) => {
-                showMessage(message);
+                if (message) {
+                    showMessage(message, MessageType.Error);
+                }
             })
         ];
         return () => subscribers.forEach((func) => func());
