@@ -84,3 +84,14 @@ export interface IFrameMessage {
     action: 'init' | 'step';
     payload: ILastMove | {isFirst: boolean, map: IFigure[]};
 }
+
+interface IYM {
+    l: number;
+    a: any[];
+}
+
+type YM = Function & IYM;
+
+declare global {
+    interface Window { ym: YM; }
+}
