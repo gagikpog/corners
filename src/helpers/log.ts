@@ -3,7 +3,7 @@ import { MessageType } from '../types';
 const originalConsoleError = console.error;
 
 export function logging(message: string, type: MessageType): void {
-    fetch('https://gagikpog-api.ru/logging/add/', {
+    fetch('https://api.gagikpog.ru/log/add/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
